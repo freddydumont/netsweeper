@@ -3,7 +3,9 @@ export default class PreloadScene extends Phaser.Scene {
     super({ key: 'PreloadScene' });
   }
 
-  preload() {}
+  preload() {
+    this.load.image('tiles', 'assets/minesweeper.png');
+  }
 
   create() {
     this.scene.start('MainScene');
