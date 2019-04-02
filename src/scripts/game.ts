@@ -15,13 +15,6 @@ const config: GameConfig = {
     height: DEFAULT_HEIGHT,
   },
   scene: [PreloadScene, MainScene],
-  physics: {
-    default: 'arcade',
-    arcade: {
-      debug: false,
-      gravity: { y: 400 },
-    },
-  },
 };
 
 window.addEventListener('load', () => {
