@@ -4,7 +4,9 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('tiles', 'assets/minesweeper.png');
+    this.load.spritesheet('tiles', 'assets/minesweeper.png', {
+      frameWidth: 32,
+    });
   }
 
   create() {
