@@ -11,6 +11,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
+    this.input.mouse.disableContextMenu();
     new PhaserVersion(this);
     this.fpsText = new FpsText(this);
 
@@ -24,7 +25,6 @@ export default class MainScene extends Phaser.Scene {
           scene: this,
           x: 0,
           y: 0,
-          tile: i % 16,
         })
     );
 
@@ -46,14 +46,6 @@ export default class MainScene extends Phaser.Scene {
 
   update() {
     this.fpsText.update(this);
-  }
-
-  private debug(layer: Phaser.Tilemaps.DynamicTilemapLayer) {
-    const debugGraphics = this.add.graphics();
-    layer.renderDebug(debugGraphics, {
-      // @ts-ignore
-      tileColor: new Phaser.Display.Color(243, 134, 48, 100),
-    });
   }
 }
 //

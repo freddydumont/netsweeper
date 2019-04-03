@@ -3,7 +3,7 @@
  * The order is important because of the enum's implicit number values.
  */
 export enum Tiles {
-  TILE,
+  DEFAULT,
   ZERO,
   FLAG,
   QUESTION_MARK,
