@@ -3,12 +3,15 @@ import PhaserVersion from '../objects/phaserVersion';
 import { Tiles, centerOnScreen } from '../utils';
 import Tile from '../objects/Tile';
 
-const MINES = 10;
-
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
   tiles: Tile[];
   areMinesGenerated = false;
+  // TODO: Replace with difficulty config
+  MINES = 10;
+  width = 9;
+  height = 9;
+  tileSize = 32;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -31,7 +34,7 @@ export default class MainScene extends Phaser.Scene {
    * @param id Tile id to exclude
    */
   public generateMines(id: number) {
-    let remainingMines = MINES;
+    let remainingMines = this.MINES;
     // shuffle the array, this doesn't change the Tile positions
     Phaser.Math.RND.shuffle(this.tiles);
 
@@ -51,13 +54,8 @@ export default class MainScene extends Phaser.Scene {
    * align them in a grid centered on the screen.
    */
   private generateGameBoard() {
-    // TODO: Replace with difficulty config
-    const width = 9;
-    const height = 9;
-    const tileSize = 32;
-
     // Generates 1 Tile instance per grid tile
-    this.tiles = new Array(width * height).fill(0).map(
+    this.tiles = new Array(this.width * this.height).fill(0).map(
       (_, i) =>
         new Tile({
           scene: this,
@@ -70,15 +68,15 @@ export default class MainScene extends Phaser.Scene {
     // Align tiles and center grid on screen
     const { x, y } = centerOnScreen(
       this.cameras.main,
-      width * tileSize,
-      height * tileSize
+      this.width * this.tileSize,
+      this.height * this.tileSize
     );
 
     Phaser.Actions.GridAlign(this.tiles, {
-      width,
-      height,
-      cellWidth: tileSize,
-      cellHeight: tileSize,
+      width: this.width,
+      height: this.height,
+      cellWidth: this.tileSize,
+      cellHeight: this.tileSize,
       x,
       y,
     });
