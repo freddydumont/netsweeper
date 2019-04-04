@@ -3,9 +3,12 @@ import PhaserVersion from '../objects/phaserVersion';
 import { Tiles, centerOnScreen } from '../utils';
 import Tile from '../objects/Tile';
 
+const MINES = 10;
+
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
   tiles: Tile[];
+  areMinesGenerated = false;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -21,6 +24,26 @@ export default class MainScene extends Phaser.Scene {
 
   update() {
     this.fpsText.update(this);
+  }
+
+  /**
+   * Generate mines excluding the id
+   * @param id Tile id to exclude
+   */
+  public generateMines(id: number) {
+    let remainingMines = MINES;
+    // shuffle the array, this doesn't change the Tile positions
+    Phaser.Math.RND.shuffle(this.tiles);
+
+    // add mines on the first 10 indexes (depend on config), excluding id
+    this.tiles.forEach((tile) => {
+      if (remainingMines > 0 && tile.id !== id) {
+        tile.isMined = true;
+        remainingMines--;
+      }
+    });
+
+    this.areMinesGenerated = true;
   }
 
   /**
@@ -40,6 +63,7 @@ export default class MainScene extends Phaser.Scene {
           scene: this,
           x: 0,
           y: 0,
+          id: i + 1,
         })
     );
 
@@ -65,4 +89,3 @@ export default class MainScene extends Phaser.Scene {
     this.fpsText = new FpsText(this);
   }
 }
-//

@@ -62,7 +62,7 @@ const createTileMachine = (context: Tile) =>
               {
                 cond: 'isMined',
                 target: 'end',
-                actions: 'lose_game',
+                actions: ['reveal', 'lose_game'],
               },
               {
                 target: 'end',
@@ -79,29 +79,32 @@ const createTileMachine = (context: Tile) =>
     },
     {
       guards: {
-        isFirstClick(context) {
-          return !context.areMinesGenerated;
+        isFirstClick(tile) {
+          return !tile.scene.areMinesGenerated;
         },
-        isMined(context) {
-          return context.isMined;
+        isMined(tile) {
+          return tile.isMined;
         },
-        isZero(context) {
-          return context.surroundingMines === 0;
+        isZero(tile) {
+          return tile.surroundingMines === 0;
         },
       },
       actions: {
-        display_idle(context) {
-          if (context.frame.sourceIndex !== Tiles.DEFAULT) {
-            context.setFrame(Tiles.DEFAULT);
+        display_idle(tile) {
+          if (tile.frame.sourceIndex !== Tiles.DEFAULT) {
+            tile.setFrame(Tiles.DEFAULT);
           }
         },
-        reveal(context) {
+        generate_mines(tile) {
+          tile.scene.generateMines(tile.id);
+        },
+        reveal(tile) {
           // TODO: frame depends on surrounding mines
-          context.setFrame(Tiles.ZERO);
+          tile.setFrame(tile.isMined ? Tiles.MINE_WRONG : Tiles.ZERO);
         },
         /** Disable clicks on Tile when end state is reached */
-        unregister_listeners(context) {
-          context.off('pointerdown');
+        unregister_listeners(tile) {
+          tile.off('pointerdown');
         },
       },
     },

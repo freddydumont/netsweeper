@@ -2,19 +2,22 @@ import { interpret } from 'xstate';
 import { Interpreter } from 'xstate/lib/interpreter';
 import { Tiles } from '../utils';
 import { TileSchema, TileEvent, createTileMachine } from './TileMachine';
+import MainScene from '../scenes/mainScene';
 
 interface TileConfig {
   scene: Phaser.Scene;
   x: number;
   y: number;
+  id: number;
   tile?: number;
 }
 
 export default class Tile extends Phaser.GameObjects.Image {
-  stateMachine: Interpreter<Tile, TileSchema, TileEvent>;
-  areMinesGenerated = false;
+  private stateMachine: Interpreter<Tile, TileSchema, TileEvent>;
+  id: number;
   isMined = false;
   surroundingMines: number;
+  scene: MainScene;
 
   constructor(params: TileConfig) {
     super(
@@ -25,6 +28,7 @@ export default class Tile extends Phaser.GameObjects.Image {
       params.tile || Tiles.DEFAULT
     );
 
+    this.id = params.id;
     this.initMachine();
 
     this.scene.add.existing(this);
@@ -50,16 +54,4 @@ export default class Tile extends Phaser.GameObjects.Image {
       this.stateMachine.send('RIGHT_CLICK');
     }
   }
-
-  // private reveal() {
-  //   if (!this.isRevealed) {
-  //     this.setFrame(Tiles.ZERO);
-  //     this.off('pointerdown');
-  //   }
-  // }
-
-  // private flag() {
-  //   this.setFrame(this.isFlagged ? Tiles.DEFAULT : Tiles.FLAG);
-  //   this.isFlagged = !this.isFlagged;
-  // }
 }
