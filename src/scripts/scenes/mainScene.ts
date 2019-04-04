@@ -5,21 +5,36 @@ import Tile from '../objects/Tile';
 
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
+  tiles: Tile[];
 
   constructor() {
     super({ key: 'MainScene' });
   }
 
   create() {
+    // disable context menu on right click
     this.input.mouse.disableContextMenu();
-    new PhaserVersion(this);
-    this.fpsText = new FpsText(this);
+    this.displayDebugInfo();
 
+    this.generateGameBoard();
+  }
+
+  update() {
+    this.fpsText.update(this);
+  }
+
+  /**
+   * Generate Tile instances based on difficulty config and
+   * align them in a grid centered on the screen.
+   */
+  private generateGameBoard() {
+    // TODO: Replace with difficulty config
     const width = 9;
     const height = 9;
     const tileSize = 32;
 
-    const tiles = new Array(width * height).fill(0).map(
+    // Generates 1 Tile instance per grid tile
+    this.tiles = new Array(width * height).fill(0).map(
       (_, i) =>
         new Tile({
           scene: this,
@@ -28,13 +43,14 @@ export default class MainScene extends Phaser.Scene {
         })
     );
 
+    // Align tiles and center grid on screen
     const { x, y } = centerOnScreen(
       this.cameras.main,
       width * tileSize,
       height * tileSize
     );
 
-    Phaser.Actions.GridAlign(tiles, {
+    Phaser.Actions.GridAlign(this.tiles, {
       width,
       height,
       cellWidth: tileSize,
@@ -44,8 +60,9 @@ export default class MainScene extends Phaser.Scene {
     });
   }
 
-  update() {
-    this.fpsText.update(this);
+  private displayDebugInfo() {
+    new PhaserVersion(this);
+    this.fpsText = new FpsText(this);
   }
 }
 //

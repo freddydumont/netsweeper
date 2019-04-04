@@ -95,6 +95,14 @@ const createTileMachine = (context: Tile) =>
             context.setFrame(Tiles.DEFAULT);
           }
         },
+        reveal(context) {
+          // TODO: frame depends on surrounding mines
+          context.setFrame(Tiles.ZERO);
+        },
+        /** Disable clicks on Tile when end state is reached */
+        unregister_listeners(context) {
+          context.off('pointerdown');
+        },
       },
     },
     context

@@ -22,7 +22,7 @@ export enum Tiles {
 }
 
 /**
- * Centers an object on the scene.
+ * Returns the centered coordinates of an object.
  * @param camera scene main camera
  * @param width width of the object
  * @param height height of the object
