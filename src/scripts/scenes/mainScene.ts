@@ -1,6 +1,6 @@
 import FpsText from '../objects/fpsText';
 import PhaserVersion from '../objects/phaserVersion';
-import { Tiles, centerOnScreen } from '../utils';
+import { centerOnScreen } from '../utils/centerOnScreen';
 import Tile from '../objects/Tile';
 
 export default class MainScene extends Phaser.Scene {

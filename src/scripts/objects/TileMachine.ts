@@ -1,6 +1,6 @@
 import { Machine } from 'xstate';
 import Tile from './Tile';
-import { Tiles } from '../utils';
+import { Tiles } from '../utils/Tiles';
 
 interface TileSchema {
   states: {
