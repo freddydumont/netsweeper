@@ -90,10 +90,21 @@ const createTileMachine = (context: Tile) =>
         },
       },
       actions: {
+        /**
+         * This is called `onEntry` of the initial state.
+         * Since it already has the right frame, we need a condition
+         * to avoid calling `setFrame` uselessly.
+         */
         display_idle(tile) {
-          if (tile.frame.sourceIndex !== Tiles.DEFAULT) {
+          if (tile.frame.name !== Tiles.DEFAULT.toString()) {
             tile.setFrame(Tiles.DEFAULT);
           }
+        },
+        display_flag(tile) {
+          tile.setFrame(Tiles.FLAG);
+        },
+        display_mark(tile) {
+          tile.setFrame(Tiles.QUESTION_MARK);
         },
         generate_mines(tile) {
           tile.scene.generateMines(tile.id);
