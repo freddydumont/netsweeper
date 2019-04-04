@@ -5,6 +5,7 @@
     "strict": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
+    "moduleResolution": "node",
     "allowUnreachableCode": false,
     "sourceMap": true,
     "strictPropertyInitialization": false,
