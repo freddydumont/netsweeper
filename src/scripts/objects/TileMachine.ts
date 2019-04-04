@@ -115,7 +115,7 @@ const createTileMachine = (context: Tile) =>
         },
         /** Disable clicks on Tile when end state is reached */
         unregister_listeners(tile) {
-          tile.off('pointerdown');
+          tile.off(Phaser.Input.Events.POINTER_DOWN);
         },
       },
     },

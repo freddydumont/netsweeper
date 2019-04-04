@@ -33,7 +33,7 @@ export default class Tile extends Phaser.GameObjects.Image {
 
     this.scene.add.existing(this);
     this.setInteractive({ cursor: 'pointer' });
-    this.on('pointerdown', this.handleClick);
+    this.on(Phaser.Input.Events.POINTER_DOWN, this.handleClick);
   }
 
   private initMachine() {
