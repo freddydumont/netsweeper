@@ -1,7 +1,6 @@
 import { Machine } from 'xstate';
 import Tile from './Tile';
 import { Tiles, TilesByNumbers } from '../utils/Tiles';
-import { getTileNeighbours } from '../utils/getTileNeighbours';
 
 interface TileSchema {
   states: {
@@ -33,16 +32,14 @@ const createTileMachine = (context: Tile) =>
           on: {
             LEFT_CLICK: 'reveal',
             RIGHT_CLICK: 'flag',
-            NEIGHBOUR_REVEALED: {
-              target: 'reveal',
-              cond: 'isZero',
-            },
+            NEIGHBOUR_REVEALED: 'reveal',
           },
         },
         flag: {
           onEntry: 'display_flag',
           on: {
             RIGHT_CLICK: 'mark',
+            NEIGHBOUR_REVEALED: 'reveal',
           },
         },
         mark: {
@@ -50,6 +47,7 @@ const createTileMachine = (context: Tile) =>
           on: {
             LEFT_CLICK: 'reveal',
             RIGHT_CLICK: 'idle',
+            NEIGHBOUR_REVEALED: 'reveal',
           },
         },
         reveal: {
@@ -86,9 +84,6 @@ const createTileMachine = (context: Tile) =>
         isMined(tile) {
           return tile.isMined;
         },
-        isZero(tile) {
-          return tile.surroundingMines === 0;
-        },
       },
       actions: {
         /**
@@ -113,7 +108,15 @@ const createTileMachine = (context: Tile) =>
         /** Display appropriate tile */
         reveal(tile) {
           tile.setFrame(TilesByNumbers[tile.surroundingMines]);
+
+          // if you reveal a zero, all surrounding tiles are revealed
+          if (tile.surroundingMines === 0) {
+            tile.neighbours.forEach((tile) => {
+              tile.onNeighbourRevealed();
+            });
+          }
         },
+
         /** Reveal all mines. The one that was clicked is highlighted. */
         reveal_mines(tile) {
           tile.scene.tiles.forEach((t) => {

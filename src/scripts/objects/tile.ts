@@ -37,6 +37,12 @@ export default class Tile extends Phaser.GameObjects.Image {
     this.on(Phaser.Input.Events.POINTER_DOWN, this.handleClick);
   }
 
+  public onNeighbourRevealed() {
+    if (this.stateMachine.state.value !== 'end') {
+      this.stateMachine.send('NEIGHBOUR_REVEALED');
+    }
+  }
+
   private initMachine() {
     this.stateMachine = interpret(createTileMachine(this))
       .onTransition((nextState) =>
