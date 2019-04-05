@@ -16,7 +16,8 @@ export default class Tile extends Phaser.GameObjects.Image {
   private stateMachine: Interpreter<Tile, TileSchema, TileEvent>;
   id: number;
   isMined = false;
-  surroundingMines: number;
+  neighbours: Tile[];
+  surroundingMines = 0;
   scene: MainScene;
 
   constructor(params: TileConfig) {

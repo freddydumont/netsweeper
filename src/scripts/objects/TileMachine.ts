@@ -1,6 +1,7 @@
 import { Machine } from 'xstate';
 import Tile from './Tile';
-import { Tiles } from '../utils/Tiles';
+import { Tiles, TilesByNumbers } from '../utils/Tiles';
+import { getTileNeighbours } from '../utils/getTileNeighbours';
 
 interface TileSchema {
   states: {
@@ -62,7 +63,7 @@ const createTileMachine = (context: Tile) =>
               {
                 cond: 'isMined',
                 target: 'end',
-                actions: ['reveal', 'lose_game'],
+                actions: ['reveal_mines', 'lose_game'],
               },
               {
                 target: 'end',
@@ -109,9 +110,19 @@ const createTileMachine = (context: Tile) =>
         generate_mines(tile) {
           tile.scene.generateMines(tile.id);
         },
+        /** Display appropriate tile */
         reveal(tile) {
-          // TODO: frame depends on surrounding mines
-          tile.setFrame(tile.isMined ? Tiles.MINE_WRONG : Tiles.ZERO);
+          tile.setFrame(TilesByNumbers[tile.surroundingMines]);
+        },
+        /** Reveal all mines. The one that was clicked is highlighted. */
+        reveal_mines(tile) {
+          tile.scene.tiles.forEach((t) => {
+            if (t.isMined) {
+              t.setFrame(Tiles.MINE);
+            }
+          });
+
+          tile.setFrame(Tiles.MINE_WRONG);
         },
         /** Disable clicks on Tile when end state is reached */
         unregister_listeners(tile) {

@@ -20,3 +20,15 @@ export enum Tiles {
   SEVEN,
   EIGHT,
 }
+
+export const TilesByNumbers = [
+  Tiles.ZERO,
+  Tiles.ONE,
+  Tiles.TWO,
+  Tiles.THREE,
+  Tiles.FOUR,
+  Tiles.FIVE,
+  Tiles.SIX,
+  Tiles.SEVEN,
+  Tiles.EIGHT,
+];

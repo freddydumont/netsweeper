@@ -2,6 +2,7 @@ import FpsText from '../objects/fpsText';
 import PhaserVersion from '../objects/phaserVersion';
 import { centerOnScreen } from '../utils/centerOnScreen';
 import Tile from '../objects/Tile';
+import { getTileNeighbours } from '../utils/getTileNeighbours';
 
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
@@ -30,23 +31,40 @@ export default class MainScene extends Phaser.Scene {
   }
 
   /**
-   * Generate mines excluding the id
+   * Generate mines excluding the id, then populate the `surroundingMines` and
+   * `neighbours` property on each tile instance.
    * @param id Tile id to exclude
    */
   public generateMines(id: number) {
     let remainingMines = this.MINES;
-    // shuffle the array, this doesn't change the Tile positions
-    Phaser.Math.RND.shuffle(this.tiles);
 
-    // add mines on the first 10 indexes (depend on config), excluding id
-    this.tiles.forEach((tile) => {
-      if (remainingMines > 0 && tile.id !== id) {
-        tile.isMined = true;
+    while (remainingMines > 0) {
+      const pick: Tile = Phaser.Math.RND.pick(this.tiles);
+      if (pick.id !== id) {
+        pick.isMined = true;
         remainingMines--;
       }
-    });
+    }
 
     this.areMinesGenerated = true;
+
+    // generate neighbours for each tile
+    this.tiles.forEach((tile) => {
+      // get neighbour ids
+      const neighbourIds = getTileNeighbours(tile.id, this.width, this.height);
+
+      // associate ids with Tile instances
+      tile.neighbours = neighbourIds.map((id) => {
+        const neighbour = this.tiles.find((tile) => tile.id === id)!;
+
+        // update mine count
+        if (neighbour.isMined) {
+          tile.surroundingMines++;
+        }
+
+        return neighbour;
+      });
+    });
   }
 
   /**

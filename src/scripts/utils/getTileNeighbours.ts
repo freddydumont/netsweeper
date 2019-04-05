@@ -1,3 +1,4 @@
+/** Return an array of neighbouring tile IDs */
 export function getTileNeighbours(
   id: number,
   width: number,
