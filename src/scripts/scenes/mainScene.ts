@@ -19,8 +19,6 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
-    // disable context menu on right click
-    this.input.mouse.disableContextMenu();
     this.displayDebugInfo();
 
     this.generateGameBoard();

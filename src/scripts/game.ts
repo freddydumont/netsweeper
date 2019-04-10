@@ -7,6 +7,19 @@ const DEFAULT_HEIGHT = 600;
 
 const config: GameConfig = {
   backgroundColor: '#ffffff',
+  canvasStyle: `
+    position: absolute;
+    top: 0;
+    left: 0;
+  `,
+  disableContextMenu: true,
+  callbacks: {
+    /** Sync the menu overlay with the canvas margin */
+    postBoot() {
+      const ml = document.querySelector('canvas')!.style.marginLeft;
+      document.getElementById('menu')!.style.marginLeft = ml;
+    },
+  },
   scale: {
     parent: 'phaser-game',
     mode: Phaser.Scale.FIT,
@@ -17,7 +30,12 @@ const config: GameConfig = {
   scene: [PreloadScene, MainScene],
 };
 
-window.addEventListener('load', () => {
-  let game = new Phaser.Game(config);
-});
-//
+let game: Phaser.Game;
+
+const createGame = () => {
+  game = new Phaser.Game(config);
+};
+
+const getGame = () => game;
+
+export { createGame, getGame };
