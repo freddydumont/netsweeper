@@ -1,5 +1,6 @@
 import 'phaser';
 import MainScene from './scenes/mainScene';
+import MenuScene from './scenes/menuScene';
 import PreloadScene from './scenes/preloadScene';
 
 const DEFAULT_WIDTH = 800;
@@ -7,14 +8,15 @@ const DEFAULT_HEIGHT = 600;
 
 const config: GameConfig = {
   backgroundColor: '#000',
+  disableContextMenu: true,
+  // canvas is a child of a relatively positioned div, with #menu as a sibling
   canvasStyle: `
     position: absolute;
     top: 0;
     left: 0;
   `,
-  disableContextMenu: true,
+  /** Sync the menu overlay with the canvas margin */
   callbacks: {
-    /** Sync the menu overlay with the canvas margin */
     postBoot() {
       const ml = document.querySelector('canvas')!.style.marginLeft;
       document.getElementById('menu')!.style.marginLeft = ml;
@@ -27,15 +29,12 @@ const config: GameConfig = {
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT,
   },
-  scene: [PreloadScene, MainScene],
+  scene: [PreloadScene, MenuScene, MainScene],
 };
-
-let game: Phaser.Game;
 
 const createGame = () => {
-  game = new Phaser.Game(config);
+  const game = new Phaser.Game(config);
+  return game;
 };
 
-const getGame = () => game;
-
-export { createGame, getGame };
+export { createGame };
