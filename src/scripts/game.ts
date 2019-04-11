@@ -2,12 +2,13 @@ import 'phaser';
 import MainScene from './scenes/mainScene';
 import MenuScene from './scenes/menuScene';
 import PreloadScene from './scenes/preloadScene';
+import { palette } from '../styles/variables';
 
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
 
 const config: GameConfig = {
-  backgroundColor: '#000',
+  backgroundColor: palette.dark,
   disableContextMenu: true,
   // canvas is a child of a relatively positioned div, with #menu as a sibling
   canvasStyle: `
@@ -18,8 +19,8 @@ const config: GameConfig = {
   /** Sync the menu overlay with the canvas margin */
   callbacks: {
     postBoot() {
-      const ml = document.querySelector('canvas')!.style.marginLeft;
-      document.getElementById('menu')!.style.marginLeft = ml;
+      const styles = document.querySelector('canvas')!.style;
+      document.getElementById('menu')!.setAttribute('style', styles.cssText);
     },
   },
   scale: {
@@ -33,8 +34,7 @@ const config: GameConfig = {
 };
 
 const createGame = () => {
-  const game = new Phaser.Game(config);
-  return game;
+  return new Phaser.Game(config);
 };
 
 export { createGame };

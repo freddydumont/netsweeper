@@ -1,23 +1,31 @@
 /** @jsx jsx **/
 import { jsx, css } from '@emotion/core';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { createGame } from './scripts/game';
+import MainMenu from './components/MainMenu';
+import { Scenes } from './scripts/events';
 
 function App() {
-  let game: Phaser.Game;
+  const [game, setGame] = useState<Phaser.Game>();
+  const [scene, setScene] = useState(Scenes.PRELOAD);
 
+  /** Create the game on mount and init scene change listeners */
   useEffect(() => {
-    game = createGame();
-  }, []);
+    if (!game) {
+      setGame(createGame());
+    } else {
+      // init game listeners
+      game.events.on(Scenes.MAINMENU, () => setScene(Scenes.MAINMENU));
+      game.events.on(Scenes.GAME, () => setScene(Scenes.GAME));
+    }
+  }, [game]);
 
   return (
     // ids are important for positioning, see game.ts
     <div id="phaser-game" css={styles.game}>
       <div id="menu" css={styles.menu}>
-        <button style={{ width: 50, height: 50, background: 'red' }}>
-          test
-        </button>
+        {scene === Scenes.MAINMENU && <MainMenu />}
       </div>
     </div>
   );
