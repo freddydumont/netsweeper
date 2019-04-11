@@ -20,7 +20,6 @@ export default class MainScene extends Phaser.Scene {
 
   create() {
     this.displayDebugInfo();
-
     this.generateGameBoard();
   }
 

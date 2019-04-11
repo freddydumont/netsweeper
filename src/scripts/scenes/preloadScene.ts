@@ -4,8 +4,25 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
+    const width = this.cameras.main.width;
+    const height = this.cameras.main.height;
+    const loadingText = this.make.text({
+      x: width / 2,
+      y: height / 2,
+      text: 'Loading...',
+      style: {
+        font: '20px monospace',
+        fill: '#ffffff',
+      },
+    });
+    loadingText.setOrigin(0.5);
+
     this.load.spritesheet('tiles', 'assets/minesweeper.png', {
       frameWidth: 32,
+    });
+
+    this.load.on('complete', function() {
+      loadingText.destroy();
     });
   }
 

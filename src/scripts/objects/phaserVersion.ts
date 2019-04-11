@@ -6,7 +6,7 @@ export default class PhaserVersion extends Phaser.GameObjects.Text {
       15,
       `Phaser v${Phaser.VERSION}`,
       {
-        color: '#000000',
+        color: '#fff',
         fontSize: 24,
       }
     );

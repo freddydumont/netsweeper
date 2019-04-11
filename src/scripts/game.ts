@@ -6,7 +6,7 @@ const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
 
 const config: GameConfig = {
-  backgroundColor: '#ffffff',
+  backgroundColor: '#000',
   canvasStyle: `
     position: absolute;
     top: 0;
