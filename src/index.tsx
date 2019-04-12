@@ -17,7 +17,8 @@ function App() {
     if (!game) {
       setGame(createGame());
     } else {
-      // init game listeners
+      // these listeners change the scene in state, to be used in render
+      // to display different UIs according to state
       game.events.on(Scenes.MAINMENU, () => setScene(Scenes.MAINMENU));
       game.events.on(Scenes.GAME, () => setScene(Scenes.GAME));
     }
@@ -27,7 +28,7 @@ function App() {
     // ids are important for positioning, see game.ts
     <div id="phaser-game" css={styles.game}>
       <div id="menu" css={styles.menu}>
-        {scene === Scenes.MAINMENU && <MainMenu />}
+        {scene === Scenes.MAINMENU && <MainMenu game={game!} />}
       </div>
     </div>
   );

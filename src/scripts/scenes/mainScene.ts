@@ -3,6 +3,7 @@ import PhaserVersion from '../objects/phaserVersion';
 import { centerOnScreen } from '../utils/centerOnScreen';
 import Tile from '../objects/Tile';
 import { getTileNeighbours } from '../utils/getTileNeighbours';
+import { Scenes } from '../events';
 
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
@@ -19,6 +20,8 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
+    // dispatch scene change event for react remove menu
+    this.game.events.emit(Scenes.GAME);
     this.displayDebugInfo();
     this.generateGameBoard();
   }
