@@ -8,7 +8,7 @@
     "start": "webpack-dev-server --config webpack/webpack.dev.js",
     "build": "webpack --config webpack/webpack.prod.js",
     "test": "jest --watch",
-    "publish": "butler push dist/ freddydumont/netsweeper:html"
+    "publish": "yarn run build && butler push dist/ freddydumont/netsweeper:html"
   },
   "keywords": [
     "Phaser",
