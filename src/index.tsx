@@ -1,10 +1,12 @@
 /** @jsx jsx **/
 import { jsx, css } from '@emotion/core';
+import { ThemeProvider } from 'emotion-theming';
 import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { createGame } from './scripts/game';
 import MainMenu from './components/MainMenu';
 import { Scenes } from './scripts/events';
+import { theme } from './styles/theme';
 
 function App() {
   const [game, setGame] = useState<Phaser.Game>();
@@ -44,4 +46,9 @@ const styles = {
   `,
 };
 
-ReactDOM.render(<App />, document.getElementById('react'));
+ReactDOM.render(
+  <ThemeProvider theme={theme}>
+    <App />
+  </ThemeProvider>,
+  document.getElementById('react')
+);

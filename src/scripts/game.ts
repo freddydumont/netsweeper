@@ -2,13 +2,13 @@ import 'phaser';
 import MainScene from './scenes/mainScene';
 import MenuScene from './scenes/menuScene';
 import PreloadScene from './scenes/preloadScene';
-import { palette } from '../styles/variables';
+import { theme } from '../styles/theme';
 
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
 
 const config: GameConfig = {
-  backgroundColor: palette.dark,
+  backgroundColor: theme.colors.dark,
   disableContextMenu: true,
   // canvas is a child of a relatively positioned div, with #menu as a sibling
   canvasStyle: `
