@@ -1,5 +1,7 @@
 import styled, { CreateStyled } from '@emotion/styled';
 
+export type Colors = 'teal' | 'pink' | 'purple' | 'blue' | 'dark';
+
 interface Theme {
   colors: {
     purple: string;

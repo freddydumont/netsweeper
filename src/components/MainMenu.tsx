@@ -12,7 +12,9 @@ function MainMenu() {
 
   return (
     <div css={styles.menu(opacity)}>
-      <Button>test</Button>
+      <Button color="teal">Easy</Button>
+      <Button color="pink">Medium</Button>
+      <Button color="blue">Hard</Button>
     </div>
   );
 }
@@ -25,7 +27,7 @@ const styles = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 
     opacity: ${opacity};
     transition: opacity 200ms ease-in-out;
