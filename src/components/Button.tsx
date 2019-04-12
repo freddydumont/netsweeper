@@ -13,13 +13,14 @@ const Button = styled.button<ButtonProps>`
   cursor: pointer;
   position: relative;
   color: ${(props) => props.theme.colors[props.color]};
-  font-size: ${(props) => props.theme.fontSizes.f2};
+  font-size: ${(props) => props.theme.fontSizes.f3};
+  font-family: inherit;
   background: transparent;
   border: none;
   border-radius: 4px;
   box-shadow: 0 2px 4px ${(props) => shadow(props)}, ${(props) => border(props)};
-  width: 20rem;
-  height: 5rem;
+  width: 9rem;
+  height: 2.25rem;
   transition: background-color 250ms ease-in;
   transition: color 250ms ease-in;
 
