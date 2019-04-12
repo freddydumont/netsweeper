@@ -15,20 +15,23 @@ function App() {
   /** Create the game on mount and init scene change listeners */
   useEffect(() => {
     if (!game) {
-      setGame(createGame());
-    } else {
-      // these listeners change the scene in state, to be used in render
-      // to display different UIs according to state
-      game.events.on(Scenes.MAINMENU, () => setScene(Scenes.MAINMENU));
-      game.events.on(Scenes.GAME, () => setScene(Scenes.GAME));
+      createGame().then((game) => {
+        setGame(game);
+        // these listeners change the scene in state, to be used in render
+        // to display different UIs according to state
+        game.events.on(Scenes.MAINMENU, () => setScene(Scenes.MAINMENU));
+        game.events.on(Scenes.GAME, () => setScene(Scenes.GAME));
+      });
     }
   }, [game]);
+
+  if (!game) return null;
 
   return (
     // ids are important for positioning, see game.ts
     <div id="phaser-game" css={styles.game}>
       <div id="menu" css={styles.menu}>
-        {scene === Scenes.MAINMENU && <MainMenu game={game!} />}
+        {scene === Scenes.MAINMENU && <MainMenu game={game} />}
       </div>
     </div>
   );

@@ -33,8 +33,8 @@ const config: GameConfig = {
   scene: [PreloadScene, MenuScene, MainScene],
 };
 
-const createGame = () => {
-  return new Phaser.Game(config);
+const createGame = async () => {
+  return await new Phaser.Game(config);
 };
 
 export { createGame };
