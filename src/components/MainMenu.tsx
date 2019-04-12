@@ -2,10 +2,17 @@
 import { jsx, css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { palette } from '../styles/variables';
+import { useLayoutEffect, useState } from 'react';
 
 function MainMenu() {
+  const [opacity, setOpacity] = useState(0);
+
+  useLayoutEffect(() => {
+    requestAnimationFrame(() => setOpacity(1));
+  }, []);
+
   return (
-    <div css={styles.menu}>
+    <div css={styles.menu(opacity)}>
       <Button>test</Button>
     </div>
   );
@@ -24,7 +31,7 @@ const Button = styled.button`
 `;
 
 const styles = {
-  menu: css`
+  menu: (opacity: number) => css`
     color: #fff;
     width: 100%;
     height: 100%;
@@ -32,6 +39,9 @@ const styles = {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    opacity: ${opacity};
+    transition: opacity 150ms ease-in-out;
   `,
 };
 
