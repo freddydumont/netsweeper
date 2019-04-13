@@ -4,16 +4,13 @@ import { centerOnScreen } from '../utils/centerOnScreen';
 import Tile from '../objects/Tile';
 import { getTileNeighbours } from '../utils/getTileNeighbours';
 import { Scenes } from '../events';
+import { Difficulty } from '../difficulties';
 
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
   tiles: Tile[];
   areMinesGenerated = false;
-  // TODO: Replace with difficulty config
-  MINES = 10;
-  width = 9;
-  height = 9;
-  tileSize = 32;
+  difficulty: Difficulty;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -31,12 +28,20 @@ export default class MainScene extends Phaser.Scene {
   }
 
   /**
+   * Difficulty is set when a main menu button is clicked
+   * @param difficulty config object
+   */
+  public setDifficulty(difficulty: Difficulty) {
+    this.difficulty = difficulty;
+  }
+
+  /**
    * Generate mines excluding the id, then populate the `surroundingMines` and
    * `neighbours` property on each tile instance.
    * @param id Tile id to exclude
    */
   public generateMines(id: number) {
-    let remainingMines = this.MINES;
+    let remainingMines = this.difficulty.mines;
 
     while (remainingMines > 0) {
       const pick: Tile = Phaser.Math.RND.pick(this.tiles);
@@ -51,7 +56,11 @@ export default class MainScene extends Phaser.Scene {
     // generate neighbours for each tile
     this.tiles.forEach((tile) => {
       // get neighbour ids
-      const neighbourIds = getTileNeighbours(tile.id, this.width, this.height);
+      const neighbourIds = getTileNeighbours(
+        tile.id,
+        this.difficulty.width,
+        this.difficulty.height
+      );
 
       // associate ids with Tile instances
       tile.neighbours = neighbourIds.map((id) => {
@@ -73,30 +82,33 @@ export default class MainScene extends Phaser.Scene {
    */
   private generateGameBoard() {
     // Generates 1 Tile instance per grid tile
-    this.tiles = new Array(this.width * this.height).fill(0).map(
-      (_, i) =>
-        new Tile({
-          scene: this,
-          x: 0,
-          y: 0,
-          id: i + 1,
-        })
-    );
+    this.tiles = new Array(this.difficulty.width * this.difficulty.height)
+      .fill(0)
+      .map(
+        (_, i) =>
+          new Tile({
+            scene: this,
+            x: 0,
+            y: 0,
+            id: i + 1,
+            scale: this.difficulty.tileSize / 32,
+          })
+      );
 
     // Align tiles and center grid on screen
     const { x, y } = centerOnScreen(
       this.cameras.main,
-      this.width * this.tileSize,
-      this.height * this.tileSize
+      this.difficulty.width * this.difficulty.tileSize,
+      this.difficulty.height * this.difficulty.tileSize
     );
 
     Phaser.Actions.GridAlign(this.tiles, {
-      width: this.width,
-      height: this.height,
-      cellWidth: this.tileSize,
-      cellHeight: this.tileSize,
-      x,
-      y,
+      width: this.difficulty.width,
+      height: this.difficulty.height,
+      cellWidth: this.difficulty.tileSize,
+      cellHeight: this.difficulty.tileSize,
+      x: x + this.difficulty.tileSize / 2,
+      y: y + this.difficulty.tileSize / 2,
     });
   }
 

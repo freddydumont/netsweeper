@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/explicit-member-accessibility': 'off',
+    '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/indent': 'off',
     'react/prop-types': 'off',
     'react-hooks/rules-of-hooks': 'error',

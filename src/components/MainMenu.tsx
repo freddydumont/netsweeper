@@ -2,12 +2,11 @@
 import { jsx, css } from '@emotion/core';
 import { useLayoutEffect, useState } from 'react';
 import Button from './Button';
+import { difficulties } from '../scripts/difficulties';
 
 interface Props {
   game: Phaser.Game;
 }
-
-type difficulties = 'easy' | 'medium' | 'hard';
 
 function MainMenu({ game }: Props) {
   const [opacity, setOpacity] = useState(0);
@@ -16,14 +15,17 @@ function MainMenu({ game }: Props) {
     requestAnimationFrame(() => setOpacity(1));
   }, []);
 
+  /** Set difficulty on MainScene and start the game */
   const handleClick = (difficulty: difficulties) => {
-    game.events.emit(`start:${difficulty}`);
+    // @ts-ignore
+    game.scene.getScene('MainScene').setDifficulty(difficulties[difficulty]);
+    game.events.emit('start');
   };
 
   return (
     <div css={styles.menu(opacity)}>
       <h1 css={(theme) => styles.title(theme)}>Netsweeper</h1>
-      <h2 css={(theme) => styles.subtitle(theme)}>Choose your difficulty:</h2>
+      <h2 css={(theme) => styles.subtitle(theme)}>Choose your difficulty</h2>
       <div css={styles.buttons}>
         <Button color="teal" onClick={() => handleClick('easy')}>
           Easy
