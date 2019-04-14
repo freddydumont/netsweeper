@@ -4,8 +4,8 @@ import MenuScene from './scenes/menuScene';
 import PreloadScene from './scenes/preloadScene';
 import { theme } from '../styles/theme';
 
-const DEFAULT_WIDTH = 800;
-const DEFAULT_HEIGHT = 600;
+export const DEFAULT_WIDTH = 800;
+export const DEFAULT_HEIGHT = 600;
 
 const config: GameConfig = {
   backgroundColor: theme.colors.dark,

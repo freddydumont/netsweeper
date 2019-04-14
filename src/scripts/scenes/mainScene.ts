@@ -3,8 +3,9 @@ import PhaserVersion from '../objects/phaserVersion';
 import { centerOnScreen } from '../utils/centerOnScreen';
 import Tile from '../objects/Tile';
 import { getTileNeighbours } from '../utils/getTileNeighbours';
-import { Scenes } from '../events';
+import { Scenes, GameEvents } from '../events';
 import { Difficulty } from '../difficulties';
+import { DEFAULT_WIDTH, DEFAULT_HEIGHT } from '../game';
 
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
@@ -81,34 +82,53 @@ export default class MainScene extends Phaser.Scene {
    * align them in a grid centered on the screen.
    */
   private generateGameBoard() {
+    const { width, height, tileSize } = this.difficulty;
+
     // Generates 1 Tile instance per grid tile
-    this.tiles = new Array(this.difficulty.width * this.difficulty.height)
-      .fill(0)
-      .map(
-        (_, i) =>
-          new Tile({
-            scene: this,
-            x: 0,
-            y: 0,
-            id: i + 1,
-            scale: this.difficulty.tileSize / 32,
-          })
-      );
+    this.tiles = new Array(width * height).fill(0).map(
+      (_, i) =>
+        new Tile({
+          scene: this,
+          x: 0,
+          y: 0,
+          id: i + 1,
+          scale: tileSize / 32,
+        })
+    );
 
     // Align tiles and center grid on screen
     const { x, y } = centerOnScreen(
       this.cameras.main,
-      this.difficulty.width * this.difficulty.tileSize,
-      this.difficulty.height * this.difficulty.tileSize
+      width * tileSize,
+      height * tileSize
     );
 
-    Phaser.Actions.GridAlign(this.tiles, {
-      width: this.difficulty.width,
-      height: this.difficulty.height,
-      cellWidth: this.difficulty.tileSize,
-      cellHeight: this.difficulty.tileSize,
-      x: x + this.difficulty.tileSize / 2,
-      y: y + this.difficulty.tileSize / 2,
+    const gridAlignConfig = {
+      width,
+      height,
+      cellWidth: tileSize,
+      cellHeight: tileSize,
+      x: x + tileSize / 2,
+      y: y + tileSize / 2,
+    };
+
+    Phaser.Actions.GridAlign(this.tiles, gridAlignConfig);
+
+    // * The following setup is to align the CSS box shadow to the board:
+    // 1) get the width and height of the canvas
+    const { width: canvasWidth, height: canvasHeight } = document.querySelector(
+      'canvas'
+    )!.style;
+
+    // 2) Get the current scale. This works because we know our defaults.
+    const scaleX = parseFloat(canvasWidth!) / DEFAULT_WIDTH;
+    const scaleY = parseFloat(canvasHeight!) / DEFAULT_HEIGHT;
+
+    // 3) Emit the board_generated event along with the config and scale.
+    //    To be used by the react component.
+    this.game.events.emit(GameEvents.BOARD_GENERATED, gridAlignConfig, {
+      scaleX,
+      scaleY,
     });
   }
 

@@ -8,4 +8,8 @@ const Scenes = {
   GAME,
 };
 
-export { Scenes };
+const GameEvents = {
+  BOARD_GENERATED: 'BOARD_GENERATED',
+};
+
+export { Scenes, GameEvents };
