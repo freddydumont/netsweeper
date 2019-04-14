@@ -33,7 +33,7 @@ function MainMenu({ game }: Props) {
         <Button color="pink" onClick={() => handleClick('medium')}>
           Medium
         </Button>
-        <Button color="blue" onClick={() => handleClick('hard')}>
+        <Button color="purple" onClick={() => handleClick('hard')}>
           Hard
         </Button>
       </div>

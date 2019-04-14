@@ -7,7 +7,7 @@ interface ButtonProps {
 /** This creates a drop shadow border, add to box-shadow */
 const border = (props) => `0 0 0 3px ${props.theme.colors[props.color]};`;
 /** returns the shadow color */
-const shadow = (props) => props.theme.colors[`${props.color}Shadow`];
+export const shadow = (props) => props.theme.colors[`${props.color}Shadow`];
 
 const Button = styled.button<ButtonProps>`
   cursor: pointer;

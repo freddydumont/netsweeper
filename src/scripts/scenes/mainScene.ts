@@ -82,7 +82,7 @@ export default class MainScene extends Phaser.Scene {
    * align them in a grid centered on the screen.
    */
   private generateGameBoard() {
-    const { width, height, tileSize } = this.difficulty;
+    const { width, height, tileSize, color } = this.difficulty;
 
     // Generates 1 Tile instance per grid tile
     this.tiles = new Array(width * height).fill(0).map(
@@ -129,6 +129,7 @@ export default class MainScene extends Phaser.Scene {
     this.game.events.emit(GameEvents.BOARD_GENERATED, gridAlignConfig, {
       scaleX,
       scaleY,
+      color,
     });
   }
 
