@@ -70,11 +70,14 @@ export default class MainScene extends Phaser.Scene {
    */
   public generateMines(id: number) {
     let remainingMines = this.difficulty.mines;
+    let excludedTiles = [id];
 
     while (remainingMines > 0) {
       const pick: Tile = Phaser.Math.RND.pick(this.tiles);
-      if (pick.id !== id) {
+      if (!excludedTiles.find((tileId) => tileId === pick.id)) {
         pick.isMined = true;
+        // * add the pick to the blacklist to avoid picking it again
+        excludedTiles.push(pick.id);
         remainingMines--;
       }
     }
