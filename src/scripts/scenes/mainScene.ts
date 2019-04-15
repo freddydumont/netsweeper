@@ -5,6 +5,7 @@ import Tile from '../objects/Tile';
 import { getTileNeighbours } from '../utils/getTileNeighbours';
 import { Scenes, GameEvents } from '../events';
 import { Difficulty } from '../difficulties';
+import MineCount from '../objects/mineCount';
 
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
@@ -12,6 +13,7 @@ export default class MainScene extends Phaser.Scene {
   areMinesGenerated = false;
   difficulty: Difficulty;
   gridAlignConfig: GridAlignConfig;
+  private _hiddenMines: number;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -34,6 +36,16 @@ export default class MainScene extends Phaser.Scene {
     // this.fpsText.update(this);
   }
 
+  /** decrease hidden mines count */
+  public flagMine() {
+    this._hiddenMines = this._hiddenMines - 1;
+  }
+
+  /** increase hidden mines count */
+  public unflagMine() {
+    this._hiddenMines = this._hiddenMines + 1;
+  }
+
   /**
    * Difficulty is set when a main menu button is clicked
    * @param difficulty config object
@@ -49,6 +61,7 @@ export default class MainScene extends Phaser.Scene {
    */
   public generateMines(id: number) {
     let remainingMines = this.difficulty.mines;
+    this._hiddenMines = remainingMines;
 
     while (remainingMines > 0) {
       const pick: Tile = Phaser.Math.RND.pick(this.tiles);

@@ -96,15 +96,23 @@ const createTileMachine = (context: Tile) =>
             tile.setFrame(Tiles.DEFAULT);
           }
         },
+
+        /** Display flag sprite and decrease hidden mine count in scene */
         display_flag(tile) {
           tile.setFrame(Tiles.FLAG);
+          tile.scene.flagMine();
         },
+
+        /** Display mark sprite and increase hidden mine count in scene */
         display_mark(tile) {
           tile.setFrame(Tiles.QUESTION_MARK);
+          tile.scene.unflagMine();
         },
+
         generate_mines(tile) {
           tile.scene.generateMines(tile.id);
         },
+
         /** Display appropriate tile */
         reveal(tile) {
           tile.setFrame(TilesByNumbers[tile.surroundingMines]);
@@ -127,6 +135,7 @@ const createTileMachine = (context: Tile) =>
 
           tile.setFrame(Tiles.MINE_WRONG);
         },
+
         /** Disable clicks on Tile when end state is reached */
         unregister_listeners(tile) {
           tile.off(Phaser.Input.Events.POINTER_DOWN);
