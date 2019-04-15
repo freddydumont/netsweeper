@@ -30,8 +30,8 @@ export default styled as CreateStyled<Theme>;
 
 export const theme = {
   colors: {
-    purple: 'rgb(113,28,145)',
-    purpleShadow: 'rgb(113,28,145, 0.75)',
+    purple: 'rgb(216,0,255)',
+    purpleShadow: 'rgb(216,0,255, 0.75)',
     pink: 'rgb(234,0,217)',
     pinkShadow: 'rgb(234,0,217, 0.75)',
     teal: 'rgb(10,189,198)',
