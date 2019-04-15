@@ -10,6 +10,7 @@ import MineCount from '../objects/mineCount';
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
   tiles: Tile[];
+  mineCountSprites: MineCount;
   areMinesGenerated = false;
   difficulty: Difficulty;
   gridAlignConfig: GridAlignConfig;
@@ -26,9 +27,10 @@ export default class MainScene extends Phaser.Scene {
     this.generateGameBoard();
     this.alignBoxShadow();
 
-    new MineCount({
+    this._hiddenMines = this.difficulty.mines;
+    this.mineCountSprites = new MineCount({
       scene: this,
-      count: this.difficulty.mines,
+      initialCount: this._hiddenMines,
     });
 
     // align with board on resize, syncStyles is initiated in `menuScene`
@@ -44,11 +46,13 @@ export default class MainScene extends Phaser.Scene {
   /** decrease hidden mines count */
   public flagMine() {
     this._hiddenMines = this._hiddenMines - 1;
+    this.mineCountSprites.updateSprites(this._hiddenMines);
   }
 
   /** increase hidden mines count */
   public unflagMine() {
     this._hiddenMines = this._hiddenMines + 1;
+    this.mineCountSprites.updateSprites(this._hiddenMines);
   }
 
   /**
@@ -66,7 +70,6 @@ export default class MainScene extends Phaser.Scene {
    */
   public generateMines(id: number) {
     let remainingMines = this.difficulty.mines;
-    this._hiddenMines = remainingMines;
 
     while (remainingMines > 0) {
       const pick: Tile = Phaser.Math.RND.pick(this.tiles);
