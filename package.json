@@ -1,31 +1,22 @@
 {
-  "name": "phaser-project-template",
-  "version": "1.0.0",
-  "description": "Phaser 3 starter template with TypeScript and webpack.",
-  "homepage": "https://github.com/yandeu/phaser-project-template#readme",
+  "name": "netsweeper",
+  "private": true,
+  "version": "0.0.4",
+  "description": "Cyberpunk Minesweeper built with Phaser and React.",
+  "homepage": "https://freddydumont.itch.io/netsweeper",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config webpack/webpack.dev.js",
     "build": "webpack --config webpack/webpack.prod.js",
-    "test": "jest --watch",
-    "publish": "yarn run build && butler push dist/ freddydumont/netsweeper:html"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "deploy": "np",
+    "prepublish": "yarn run build",
+    "version": "butler push dist/ freddydumont/netsweeper:html --userversion=$npm_package_version"
   },
-  "keywords": [
-    "Phaser",
-    "Phaser 3",
-    "Phaser3",
-    "html5 game",
-    "TypeScript",
-    "webpack",
-    "starter"
-  ],
   "author": {
-    "name": "Yannick Deubel",
-    "url": "https://github.com/yandeu"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yandeu/phaser-project-template.git"
+    "name": "freddydumont",
+    "url": "https://github.com/freddydumont"
   },
   "template": {
     "name": "phaser-project-template",
@@ -35,7 +26,6 @@
   "engines": {
     "node": ">=8.0.0"
   },
-  "license": "MIT",
   "devDependencies": {
     "@types/jest": "^24.0.11",
     "@types/react": "^16.8.13",
@@ -49,6 +39,7 @@
     "eslint-plugin-react-hooks": "^1.6.0",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.7.1",
+    "np": "^4.0.2",
     "ts-jest": "^24.0.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.4.1",
