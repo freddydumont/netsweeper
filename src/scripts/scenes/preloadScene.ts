@@ -21,6 +21,11 @@ export default class PreloadScene extends Phaser.Scene {
       frameWidth: 32,
     });
 
+    this.load.spritesheet('digits', 'assets/digits.png', {
+      frameHeight: 46,
+      frameWidth: 26,
+    });
+
     this.load.on('complete', function() {
       loadingText.destroy();
     });

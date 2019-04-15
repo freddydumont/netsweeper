@@ -26,6 +26,11 @@ export default class MainScene extends Phaser.Scene {
     this.generateGameBoard();
     this.alignBoxShadow();
 
+    new MineCount({
+      scene: this,
+      count: this.difficulty.mines,
+    });
+
     // align with board on resize, syncStyles is initiated in `menuScene`
     this.scale.on(Phaser.Scale.Events.RESIZE, () => {
       this.alignBoxShadow();
