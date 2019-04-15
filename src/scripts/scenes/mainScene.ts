@@ -5,13 +5,13 @@ import Tile from '../objects/Tile';
 import { getTileNeighbours } from '../utils/getTileNeighbours';
 import { Scenes, GameEvents } from '../events';
 import { Difficulty } from '../difficulties';
-import { DEFAULT_WIDTH, DEFAULT_HEIGHT } from '../game';
 
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
   tiles: Tile[];
   areMinesGenerated = false;
   difficulty: Difficulty;
+  gridAlignConfig: GridAlignConfig;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -20,12 +20,18 @@ export default class MainScene extends Phaser.Scene {
   create() {
     // dispatch scene change event for react remove menu
     this.game.events.emit(Scenes.GAME);
-    this.displayDebugInfo();
+    // this.displayDebugInfo();
     this.generateGameBoard();
+    this.alignBoxShadow();
+
+    // align with board on resize, syncStyles is initiated in `menuScene`
+    this.scale.on(Phaser.Scale.Events.RESIZE, () => {
+      this.alignBoxShadow();
+    });
   }
 
   update() {
-    this.fpsText.update(this);
+    // this.fpsText.update(this);
   }
 
   /**
@@ -82,7 +88,7 @@ export default class MainScene extends Phaser.Scene {
    * align them in a grid centered on the screen.
    */
   private generateGameBoard() {
-    const { width, height, tileSize, color } = this.difficulty;
+    const { width, height, tileSize } = this.difficulty;
 
     // Generates 1 Tile instance per grid tile
     this.tiles = new Array(width * height).fill(0).map(
@@ -103,7 +109,7 @@ export default class MainScene extends Phaser.Scene {
       height * tileSize
     );
 
-    const gridAlignConfig = {
+    this.gridAlignConfig = {
       width,
       height,
       cellWidth: tileSize,
@@ -112,24 +118,27 @@ export default class MainScene extends Phaser.Scene {
       y: y + tileSize / 2,
     };
 
-    Phaser.Actions.GridAlign(this.tiles, gridAlignConfig);
+    Phaser.Actions.GridAlign(this.tiles, this.gridAlignConfig);
+  }
 
-    // * The following setup is to align the CSS box shadow to the board:
-    // 1) get the width and height of the canvas
-    const { width: canvasWidth, height: canvasHeight } = document.querySelector(
-      'canvas'
-    )!.style;
+  /**
+   * Aligns the CSS box shadow to the board.
+   * Called on create and resize event.
+   */
+  private alignBoxShadow() {
+    // get the width and height of the canvas
+    const { width, height } = this.game.canvas.style;
 
-    // 2) Get the current scale. This works because we know our defaults.
-    const scaleX = parseFloat(canvasWidth!) / DEFAULT_WIDTH;
-    const scaleY = parseFloat(canvasHeight!) / DEFAULT_HEIGHT;
+    // Get the current scale. This works because we can access the base dimensions.
+    const scaleX = parseFloat(width!) / this.game.canvas.width;
+    const scaleY = parseFloat(height!) / this.game.canvas.height;
 
     // 3) Emit the board_generated event along with the config and scale.
     //    To be used by the react component.
-    this.game.events.emit(GameEvents.BOARD_GENERATED, gridAlignConfig, {
+    this.game.events.emit(GameEvents.BOARD_GENERATED, this.gridAlignConfig, {
       scaleX,
       scaleY,
-      color,
+      color: this.difficulty.color,
     });
   }
 

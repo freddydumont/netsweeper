@@ -3,9 +3,10 @@ import MainScene from './scenes/mainScene';
 import MenuScene from './scenes/menuScene';
 import PreloadScene from './scenes/preloadScene';
 import { theme } from '../styles/theme';
+import { syncStyles } from './utils/syncStyles';
 
-export const DEFAULT_WIDTH = 800;
-export const DEFAULT_HEIGHT = 600;
+const DEFAULT_WIDTH = 800;
+const DEFAULT_HEIGHT = 600;
 
 const config: GameConfig = {
   backgroundColor: theme.colors.dark,
@@ -19,8 +20,7 @@ const config: GameConfig = {
   /** Sync the menu overlay with the canvas margin */
   callbacks: {
     postBoot() {
-      const styles = document.querySelector('canvas')!.style;
-      document.getElementById('menu')!.setAttribute('style', styles.cssText);
+      syncStyles('menu');
     },
   },
   scale: {
