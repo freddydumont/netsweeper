@@ -7,3 +7,11 @@ interface BoxShadowConfig extends Omit<Required<GridAlignConfig>, 'position'> {
   scaleY: number;
   color: Colors;
 }
+
+interface BoxShadow {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  color: Colors;
+}

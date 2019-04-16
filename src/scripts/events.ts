@@ -6,6 +6,7 @@ enum Scenes {
 
 enum GameEvents {
   BOARD_GENERATED = 'BOARD_GENERATED',
+  MINECOUNT_GENERATED = 'MINECOUNT_GENERATED',
 }
 
 export { Scenes, GameEvents };

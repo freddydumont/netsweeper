@@ -25,7 +25,6 @@ export default class MainScene extends Phaser.Scene {
     this.game.events.emit(Scenes.GAME);
     // this.displayDebugInfo();
     this.generateGameBoard();
-    this.alignBoxShadow();
 
     this._hiddenMines = this.difficulty.mines;
     this.mineCountSprites = new MineCount({
@@ -33,6 +32,7 @@ export default class MainScene extends Phaser.Scene {
       initialCount: this._hiddenMines,
     });
 
+    this.alignBoxShadow();
     // align with board on resize, syncStyles is initiated in `menuScene`
     this.scale.on(Phaser.Scale.Events.RESIZE, () => {
       this.alignBoxShadow();
@@ -164,6 +164,13 @@ export default class MainScene extends Phaser.Scene {
       scaleX,
       scaleY,
       color: this.difficulty.color,
+    });
+
+    this.game.events.emit(GameEvents.MINECOUNT_GENERATED, {
+      ...this.mineCountSprites.gridAlignConfig,
+      scaleX,
+      scaleY,
+      color: 'red',
     });
   }
 

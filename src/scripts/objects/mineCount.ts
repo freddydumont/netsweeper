@@ -10,6 +10,8 @@ interface MineCountConfig {
  * Displays the current hidden mine count in digit images.
  */
 export default class MineCount extends Phaser.GameObjects.Group {
+  gridAlignConfig: GridAlignConfig;
+
   constructor(params: MineCountConfig) {
     super(params.scene, [
       new Phaser.GameObjects.Image(params.scene, 0, 0, 'digits', Digits.ZERO),
@@ -17,13 +19,16 @@ export default class MineCount extends Phaser.GameObjects.Group {
       new Phaser.GameObjects.Image(params.scene, 2, 0, 'digits', Digits.ZERO),
     ]);
 
-    Phaser.Actions.GridAlign(this.getChildren(), {
+    this.gridAlignConfig = {
       cellHeight: 46,
       cellWidth: 26,
       width: 3,
+      height: 1,
       x: 100,
       y: 50,
-    });
+    };
+
+    Phaser.Actions.GridAlign(this.getChildren(), this.gridAlignConfig);
 
     // @ts-ignore // ! phaser types not generic, can't tell it what child is
     this.getChildren().forEach((child: Phaser.GameObjects.Image, i) => {

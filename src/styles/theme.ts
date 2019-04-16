@@ -1,14 +1,16 @@
 import styled, { CreateStyled } from '@emotion/styled';
 
-export type Colors = 'teal' | 'pink' | 'purple' | 'blue' | 'dark';
+export type Colors = 'teal' | 'pink' | 'purple' | 'blue' | 'dark' | 'red';
 
 interface Theme {
   colors: {
+    red: string;
     purple: string;
     teal: string;
     pink: string;
     blue: string;
     dark: string;
+    redShadow: string;
     purpleShadow: string;
     pinkShadow: string;
     tealShadow: string;
@@ -30,6 +32,8 @@ export default styled as CreateStyled<Theme>;
 
 export const theme = {
   colors: {
+    red: 'rgb(255,0,0)',
+    redShadow: 'rgb(255,0,0, 0.75)',
     purple: 'rgb(216,0,255)',
     purpleShadow: 'rgb(216,0,255, 0.75)',
     pink: 'rgb(234,0,217)',
