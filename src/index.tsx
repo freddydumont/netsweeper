@@ -9,6 +9,7 @@ import { BoardShadow, CountShadow } from './components/BoxShadow';
 import { Scenes, GameEvents } from './scripts/events';
 import { theme } from './styles/theme';
 import { BoxShadowConfig } from '../typings/custom';
+import { setBoxShadow } from './scripts/utils/setBoxShadow';
 
 function App() {
   const [game, setGame] = useState<Phaser.Game>();
@@ -26,27 +27,12 @@ function App() {
         game.events.on(Scenes.MAINMENU, () => setScene(Scenes.MAINMENU));
         game.events.on(Scenes.GAME, () => setScene(Scenes.GAME));
 
-        game.events.on(GameEvents.BOARD_GENERATED, (board: BoxShadowConfig) => {
-          setBoard({
-            ...board,
-            x: (board.x - board.cellWidth / 2) * board.scaleX,
-            y: (board.y - board.cellHeight / 2) * board.scaleY,
-            width: board.width * board.scaleX * board.cellWidth,
-            height: board.height * board.scaleY * board.cellHeight,
-          });
-        });
+        game.events.on(GameEvents.BOARD_GENERATED, (board: BoxShadowConfig) =>
+          setBoxShadow(board, setBoard)
+        );
 
-        game.events.on(
-          GameEvents.MINECOUNT_GENERATED,
-          (board: BoxShadowConfig) => {
-            setMineCount({
-              ...board,
-              x: (board.x - board.cellWidth / 2) * board.scaleX,
-              y: (board.y - board.cellHeight / 2) * board.scaleY,
-              width: board.width * board.scaleX * board.cellWidth,
-              height: board.height * board.scaleY * board.cellHeight,
-            });
-          }
+        game.events.on(GameEvents.MINECOUNT_GENERATED, (box: BoxShadowConfig) =>
+          setBoxShadow(box, setMineCount)
         );
       });
     }
