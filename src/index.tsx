@@ -7,13 +7,13 @@ import { createGame } from './scripts/game';
 import MainMenu from './components/MainMenu';
 import BoardShadow from './components/BoardShadow';
 import { Scenes, GameEvents } from './scripts/events';
-import { theme, Colors } from './styles/theme';
+import { theme } from './styles/theme';
+import { BoxShadowConfig } from '../typings/custom';
 
 function App() {
   const [game, setGame] = useState<Phaser.Game>();
   const [scene, setScene] = useState(Scenes.PRELOAD);
-  const [board, setBoard] = useState<Required<GridAlignConfig> | undefined>();
-  const [color, setColor] = useState<Colors>('teal');
+  const [board, setBoard] = useState<BoxShadowConfig | undefined>();
 
   /** Create the game on mount and init scene change listeners */
   useEffect(() => {
@@ -25,19 +25,15 @@ function App() {
         game.events.on(Scenes.MAINMENU, () => setScene(Scenes.MAINMENU));
         game.events.on(Scenes.GAME, () => setScene(Scenes.GAME));
 
-        game.events.on(
-          GameEvents.BOARD_GENERATED,
-          (board: Required<GridAlignConfig>, { scaleX, scaleY, color }) => {
-            setColor(color);
-            setBoard({
-              ...board,
-              x: (board.x - board.cellWidth / 2) * scaleX,
-              y: (board.y - board.cellHeight / 2) * scaleY,
-              width: board.width * scaleX,
-              height: board.height * scaleY,
-            });
-          }
-        );
+        game.events.on(GameEvents.BOARD_GENERATED, (board: BoxShadowConfig) => {
+          setBoard({
+            ...board,
+            x: (board.x - board.cellWidth / 2) * board.scaleX,
+            y: (board.y - board.cellHeight / 2) * board.scaleY,
+            width: board.width * board.scaleX * board.cellWidth,
+            height: board.height * board.scaleY * board.cellHeight,
+          });
+        });
       });
     }
   }, [game]);
@@ -49,9 +45,7 @@ function App() {
     <div id="phaser-game" css={styles.game}>
       <div id="menu" css={styles.menu}>
         {scene === Scenes.MAINMENU && <MainMenu game={game} />}
-        {scene === Scenes.GAME && board && (
-          <BoardShadow board={board} color={color} />
-        )}
+        {scene === Scenes.GAME && board && <BoardShadow board={board} />}
       </div>
     </div>
   );

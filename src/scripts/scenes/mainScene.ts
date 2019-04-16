@@ -159,7 +159,8 @@ export default class MainScene extends Phaser.Scene {
 
     // 3) Emit the board_generated event along with the config and scale.
     //    To be used by the react component.
-    this.game.events.emit(GameEvents.BOARD_GENERATED, this.gridAlignConfig, {
+    this.game.events.emit(GameEvents.BOARD_GENERATED, {
+      ...this.gridAlignConfig,
       scaleX,
       scaleY,
       color: this.difficulty.color,

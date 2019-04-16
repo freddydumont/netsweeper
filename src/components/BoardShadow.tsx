@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
-import { Colors } from '../styles/theme';
 import { shadow } from './Button';
+import { BoxShadowConfig } from '../../typings/custom';
 
 interface BoardProps {
-  color: Colors;
-  board: Required<GridAlignConfig>;
+  board: BoxShadowConfig;
 }
 
 /**
@@ -19,9 +18,10 @@ const BoardShadow = styled.div<BoardProps>`
   position: absolute;
   top: ${({ board }) => board.y}px;
   left: ${({ board }) => board.x}px;
-  width: ${({ board }) => board.width * board.cellWidth}px;
-  height: ${({ board }) => board.height * board.cellHeight}px;
-  box-shadow: 0 2px 32px ${(props) => shadow(props)};
+  width: ${({ board }) => board.width}px;
+  height: ${({ board }) => board.height}px;
+  box-shadow: 0 2px 32px
+    ${(props) => shadow({ color: props.board.color, ...props })};
 `;
 
 export default BoardShadow;
