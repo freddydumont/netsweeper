@@ -16,6 +16,7 @@ function App() {
   const [scene, setScene] = useState(Scenes.PRELOAD);
   const [board, setBoard] = useState<BoxShadowConfig | undefined>();
   const [mineCount, setMineCount] = useState<BoxShadowConfig | undefined>();
+  const [timer, setTimer] = useState<BoxShadowConfig | undefined>();
 
   /** Create the game on mount and init scene change listeners */
   useEffect(() => {
@@ -34,6 +35,10 @@ function App() {
         game.events.on(GameEvents.MINECOUNT_GENERATED, (box: BoxShadowConfig) =>
           setBoxShadow(box, setMineCount)
         );
+
+        game.events.on(GameEvents.TIMER_GENERATED, (box: BoxShadowConfig) =>
+          setBoxShadow(box, setTimer)
+        );
       });
     }
   }, [game]);
@@ -51,6 +56,7 @@ function App() {
         {scene === Scenes.GAME && mineCount && (
           <CountShadow board={mineCount} />
         )}
+        {scene === Scenes.GAME && timer && <CountShadow board={timer} />}
       </div>
     </div>
   );

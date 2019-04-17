@@ -1,18 +1,22 @@
 import { Digits } from '../utils/Digits';
 import { numberToFrames } from '../utils/numberToFrames';
 
-interface MineCountConfig {
+interface CounterConfig {
   scene: Phaser.Scene;
   initialCount: number;
+  positon: {
+    x: number;
+    y: number;
+  };
 }
 
 /**
- * Displays the current hidden mine count in digit images.
+ * Displays a counter in digit images.
  */
-export default class MineCount extends Phaser.GameObjects.Group {
+export default class Counter extends Phaser.GameObjects.Group {
   gridAlignConfig: GridAlignConfig;
 
-  constructor(params: MineCountConfig) {
+  constructor(params: CounterConfig) {
     super(params.scene, [
       new Phaser.GameObjects.Image(params.scene, 0, 0, 'digits', Digits.ZERO),
       new Phaser.GameObjects.Image(params.scene, 1, 0, 'digits', Digits.ZERO),
@@ -24,13 +28,13 @@ export default class MineCount extends Phaser.GameObjects.Group {
       cellWidth: 26,
       width: 3,
       height: 1,
-      x: 100,
-      y: 50,
+      x: params.positon.x,
+      y: params.positon.y,
     };
 
     Phaser.Actions.GridAlign(this.getChildren(), this.gridAlignConfig);
 
-    this.getChildren().forEach((child, i) => {
+    this.children.each((child, i) => {
       // give images the right sprite
       const sprites = numberToFrames(params.initialCount);
       (child as Phaser.GameObjects.Image).setFrame(sprites[i]);
@@ -45,7 +49,7 @@ export default class MineCount extends Phaser.GameObjects.Group {
    */
   public updateSprites(count: number) {
     const sprites = numberToFrames(count);
-    this.getChildren().forEach((child, i) => {
+    this.children.each((child, i) => {
       (child as Phaser.GameObjects.Image).setFrame(sprites[i]);
     });
   }

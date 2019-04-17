@@ -5,12 +5,15 @@ import Tile from '../objects/Tile';
 import { getTileNeighbours } from '../utils/getTileNeighbours';
 import { Scenes, GameEvents } from '../events';
 import { Difficulty } from '../difficulties';
-import MineCount from '../objects/mineCount';
+import Counter from '../objects/counter';
 
 export default class MainScene extends Phaser.Scene {
   fpsText: Phaser.GameObjects.Text;
   tiles: Tile[];
-  mineCountSprites: MineCount;
+  mineCountSprites: Counter;
+  clock: number;
+  timer = 0;
+  timerSprites: Counter;
   areMinesGenerated = false;
   difficulty: Difficulty;
   gridAlignConfig: GridAlignConfig;
@@ -27,9 +30,23 @@ export default class MainScene extends Phaser.Scene {
     this.generateGameBoard();
 
     this._hiddenMines = this.difficulty.mines;
-    this.mineCountSprites = new MineCount({
+
+    this.mineCountSprites = new Counter({
       scene: this,
       initialCount: this._hiddenMines,
+      positon: {
+        x: 200,
+        y: 50,
+      },
+    });
+
+    this.timerSprites = new Counter({
+      scene: this,
+      initialCount: this.timer,
+      positon: {
+        x: 600,
+        y: 50,
+      },
     });
 
     this.alignBoxShadow();
@@ -69,6 +86,12 @@ export default class MainScene extends Phaser.Scene {
    * @param id Tile id to exclude
    */
   public generateMines(id: number) {
+    // start timer
+    this.clock = setInterval(() => {
+      this.timer++;
+      this.timerSprites.updateSprites(this.timer);
+    }, 1000);
+
     let remainingMines = this.difficulty.mines;
     let excludedTiles = [id];
 
@@ -168,6 +191,13 @@ export default class MainScene extends Phaser.Scene {
 
     this.game.events.emit(GameEvents.MINECOUNT_GENERATED, {
       ...this.mineCountSprites.gridAlignConfig,
+      scaleX,
+      scaleY,
+      color: 'red',
+    });
+
+    this.game.events.emit(GameEvents.TIMER_GENERATED, {
+      ...this.timerSprites.gridAlignConfig,
       scaleX,
       scaleY,
       color: 'red',
