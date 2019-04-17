@@ -10,7 +10,13 @@ interface Difficulty {
   color: Colors;
 }
 
-const difficulties = {
+interface Difficulties {
+  easy: Difficulty;
+  medium: Difficulty;
+  hard: Difficulty;
+}
+
+const difficulties: Difficulties = {
   easy: {
     width: 9,
     height: 9,

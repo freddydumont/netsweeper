@@ -3,6 +3,7 @@ import { jsx, css } from '@emotion/core';
 import { useLayoutEffect, useState } from 'react';
 import Button from './Button';
 import { difficulties } from '../scripts/difficulties';
+import MainScene from '../scripts/scenes/mainScene';
 
 interface Props {
   game: Phaser.Game;
@@ -17,8 +18,8 @@ function MainMenu({ game }: Props) {
 
   /** Set difficulty on MainScene and start the game */
   const handleClick = (difficulty: difficulties) => {
-    // @ts-ignore
-    game.scene.getScene('MainScene').setDifficulty(difficulties[difficulty]);
+    const scene = game.scene.getScene('MainScene') as MainScene;
+    scene.setDifficulty(difficulties[difficulty]);
     game.events.emit('start');
   };
 

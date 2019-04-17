@@ -30,11 +30,10 @@ export default class MineCount extends Phaser.GameObjects.Group {
 
     Phaser.Actions.GridAlign(this.getChildren(), this.gridAlignConfig);
 
-    // @ts-ignore // ! phaser types not generic, can't tell it what child is
-    this.getChildren().forEach((child: Phaser.GameObjects.Image, i) => {
+    this.getChildren().forEach((child, i) => {
       // give images the right sprite
       const sprites = numberToFrames(params.initialCount);
-      child.setFrame(sprites[i]);
+      (child as Phaser.GameObjects.Image).setFrame(sprites[i]);
       // add to scene
       this.scene.add.existing(child);
     });
@@ -46,9 +45,8 @@ export default class MineCount extends Phaser.GameObjects.Group {
    */
   public updateSprites(count: number) {
     const sprites = numberToFrames(count);
-    // @ts-ignore // ! phaser types not generic, can't tell it what child is
-    this.getChildren().forEach((child: Phaser.GameObjects.Image, i) => {
-      child.setFrame(sprites[i]);
+    this.getChildren().forEach((child, i) => {
+      (child as Phaser.GameObjects.Image).setFrame(sprites[i]);
     });
   }
 }
