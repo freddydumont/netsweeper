@@ -35,8 +35,8 @@ export default class MainScene extends Phaser.Scene {
       scene: this,
       initialCount: this._hiddenMines,
       positon: {
-        x: 200,
-        y: 50,
+        x: this.cameras.main.centerX - 200,
+        y: 75,
       },
     });
 
@@ -44,8 +44,8 @@ export default class MainScene extends Phaser.Scene {
       scene: this,
       initialCount: this.timer,
       positon: {
-        x: 600,
-        y: 50,
+        x: this.cameras.main.centerX + 200 - 2 * 26,
+        y: 75,
       },
     });
 
@@ -162,7 +162,7 @@ export default class MainScene extends Phaser.Scene {
       cellWidth: tileSize,
       cellHeight: tileSize,
       x: x + tileSize / 2,
-      y: y + tileSize / 2,
+      y: y + tileSize / 2 + 50,
     };
 
     Phaser.Actions.GridAlign(this.tiles, this.gridAlignConfig);
