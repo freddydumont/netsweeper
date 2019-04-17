@@ -1,7 +1,7 @@
 {
   "name": "netsweeper",
   "private": true,
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Cyberpunk Minesweeper built with Phaser and React.",
   "homepage": "https://freddydumont.itch.io/netsweeper",
   "main": "index.js",
