@@ -140,6 +140,15 @@ const createTileMachine = (context: Tile) =>
         unregister_listeners(tile) {
           tile.off(Phaser.Input.Events.POINTER_DOWN);
         },
+
+        lose_game(tile) {
+          // remove interactivity on all tiles
+          tile.scene.tiles.forEach((t) => {
+            t.removeInteractive();
+          });
+          // stop the timer
+          clearInterval(tile.scene.clock);
+        },
       },
     },
     context
