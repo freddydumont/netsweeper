@@ -10,6 +10,7 @@ import { Scenes, GameEvents } from './scripts/events';
 import { theme } from './styles/theme';
 import { BoxShadowConfig } from '../typings/custom';
 import { setBoxShadow } from './scripts/utils/setBoxShadow';
+import Emoji, { EmojiConfig } from './components/Emoji';
 
 function App() {
   const [game, setGame] = useState<Phaser.Game>();
@@ -17,6 +18,7 @@ function App() {
   const [board, setBoard] = useState<BoxShadowConfig | undefined>();
   const [mineCount, setMineCount] = useState<BoxShadowConfig | undefined>();
   const [timer, setTimer] = useState<BoxShadowConfig | undefined>();
+  const [emojiConfig, setEmojiConfig] = useState<EmojiConfig | undefined>();
 
   /** Create the game on mount and init scene change listeners */
   useEffect(() => {
@@ -39,6 +41,10 @@ function App() {
         game.events.on(GameEvents.TIMER_GENERATED, (box: BoxShadowConfig) =>
           setBoxShadow(box, setTimer)
         );
+
+        game.events.on(GameEvents.EMOJI_UPDATED, (box: EmojiConfig) => {
+          setEmojiConfig(box);
+        });
       });
     }
   }, [game]);
@@ -57,6 +63,7 @@ function App() {
           <CountShadow board={mineCount} />
         )}
         {scene === Scenes.GAME && timer && <CountShadow board={timer} />}
+        {scene === Scenes.GAME && emojiConfig && <Emoji config={emojiConfig} />}
       </div>
     </div>
   );

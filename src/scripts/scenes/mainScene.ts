@@ -202,6 +202,15 @@ export default class MainScene extends Phaser.Scene {
       scaleY,
       color: 'red',
     });
+
+    const { x, cellWidth, width: boardWidth } = this
+      .gridAlignConfig as Required<GridAlignConfig>;
+
+    this.game.events.emit(GameEvents.EMOJI_UPDATED, {
+      x: (x - cellWidth / 2 + (boardWidth * cellWidth) / 2) * scaleX,
+      height: this.timerSprites.gridAlignConfig.cellHeight,
+      scale: scaleY,
+    });
   }
 
   private displayDebugInfo() {
