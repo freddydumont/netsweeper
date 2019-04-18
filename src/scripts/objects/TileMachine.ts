@@ -1,6 +1,7 @@
 import { Machine } from 'xstate';
 import Tile from './Tile';
 import { Tiles, TilesByNumbers } from '../utils/Tiles';
+import { GameEvents } from '../events';
 
 interface TileSchema {
   states: {
@@ -124,15 +125,18 @@ const createTileMachine = (context: Tile) =>
         display_idle(tile) {
           if (tile.frame.name !== Tiles.DEFAULT.toString()) {
             tile.setFrame(Tiles.DEFAULT);
+            tile.scene.game.events.emit(GameEvents.EMOJI_THINK);
           }
         },
 
         display_zero(tile) {
           tile.setFrame(Tiles.ZERO);
+          tile.scene.game.events.emit(GameEvents.EMOJI_GASP);
         },
 
         display_mark_down(tile) {
           tile.setFrame(Tiles.QUESTION_MARK_PRESSED);
+          tile.scene.game.events.emit(GameEvents.EMOJI_GASP);
         },
 
         /** Display flag sprite and decrease hidden mine count in scene */
@@ -153,6 +157,7 @@ const createTileMachine = (context: Tile) =>
 
         /** Display appropriate tile */
         reveal(tile) {
+          tile.scene.game.events.emit(GameEvents.EMOJI_THINK);
           tile.setFrame(TilesByNumbers[tile.surroundingMines]);
 
           // if you reveal a zero, all surrounding tiles are revealed
@@ -186,6 +191,8 @@ const createTileMachine = (context: Tile) =>
           });
           // stop the timer
           clearInterval(tile.scene.clock);
+          // display losing emoji
+          tile.scene.game.events.emit(GameEvents.EMOJI_DEAD);
         },
       },
     },
