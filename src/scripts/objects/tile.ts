@@ -34,8 +34,22 @@ export default class Tile extends Phaser.GameObjects.Image {
     this.initMachine();
 
     this.scene.add.existing(this);
-    this.setInteractive();
+    this.setInteractive({
+      useHandCursor: true,
+    });
+
     this.on(Phaser.Input.Events.POINTER_DOWN, this.handleClick);
+    this.on(Phaser.Input.Events.POINTER_OUT, () => {
+      this.stateMachine.send('POINTER_OUT');
+    });
+
+    this.on(Phaser.Input.Events.POINTER_UP, () => {
+      this.stateMachine.send('POINTER_UP');
+    });
+
+    this.on(Phaser.Input.Events.POINTER_OVER, () => {
+      this.stateMachine.send('POINTER_OVER');
+    });
 
     this.setScale(params.scale);
     this.setOrigin(0);
@@ -60,7 +74,7 @@ export default class Tile extends Phaser.GameObjects.Image {
 
   private handleClick({ buttons }: Phaser.Input.Pointer) {
     if (buttons === 1) {
-      this.stateMachine.send('LEFT_CLICK');
+      this.stateMachine.send('POINTER_DOWN');
     } else {
       this.stateMachine.send('RIGHT_CLICK');
     }

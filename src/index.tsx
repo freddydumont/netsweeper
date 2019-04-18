@@ -28,7 +28,11 @@ function App() {
         // these listeners change the scene in state, to be used in render
         // to display different UIs according to state
         game.events.on(Scenes.MAINMENU, () => setScene(Scenes.MAINMENU));
-        game.events.on(Scenes.GAME, () => setScene(Scenes.GAME));
+        game.events.on(Scenes.GAME, () => {
+          // remove pointer events for canvas pass-through
+          document.getElementById('menu')!.style.pointerEvents = 'none';
+          setScene(Scenes.GAME);
+        });
 
         game.events.on(GameEvents.BOARD_GENERATED, (board: BoxShadowConfig) =>
           setBoxShadow(board, setBoard)

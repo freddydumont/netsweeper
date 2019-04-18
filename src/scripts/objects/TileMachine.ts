@@ -5,17 +5,22 @@ import { Tiles, TilesByNumbers } from '../utils/Tiles';
 interface TileSchema {
   states: {
     idle: {};
+    down: {};
     flag: {};
     mark: {};
+    mark_down: {};
     reveal: {};
     end: {};
   };
 }
 
 type TileEvent =
-  | { type: 'LEFT_CLICK' }
   | { type: 'RIGHT_CLICK' }
-  | { type: 'NEIGHBOUR_REVEALED' };
+  | { type: 'NEIGHBOUR_REVEALED' }
+  | { type: 'POINTER_DOWN' }
+  | { type: 'POINTER_OUT' }
+  | { type: 'POINTER_UP' }
+  | { type: 'POINTER_OVER' };
 
 /**
  * Generates a state machine based on the provided context.
@@ -30,9 +35,20 @@ const createTileMachine = (context: Tile) =>
         idle: {
           onEntry: 'display_idle',
           on: {
-            LEFT_CLICK: 'reveal',
+            POINTER_DOWN: 'down',
+            POINTER_OVER: {
+              target: 'down',
+              cond: 'isPointerDown',
+            },
             RIGHT_CLICK: 'flag',
             NEIGHBOUR_REVEALED: 'reveal',
+          },
+        },
+        down: {
+          onEntry: 'display_zero',
+          on: {
+            POINTER_OUT: 'idle',
+            POINTER_UP: 'reveal',
           },
         },
         flag: {
@@ -45,9 +61,20 @@ const createTileMachine = (context: Tile) =>
         mark: {
           onEntry: 'display_mark',
           on: {
-            LEFT_CLICK: 'reveal',
+            POINTER_DOWN: 'mark_down',
+            POINTER_OVER: {
+              target: 'mark_down',
+              cond: 'isPointerDown',
+            },
             RIGHT_CLICK: 'idle',
             NEIGHBOUR_REVEALED: 'reveal',
+          },
+        },
+        mark_down: {
+          onEntry: 'display_mark_down',
+          on: {
+            POINTER_OUT: 'mark',
+            POINTER_UP: 'reveal',
           },
         },
         reveal: {
@@ -84,6 +111,9 @@ const createTileMachine = (context: Tile) =>
         isMined(tile) {
           return tile.isMined;
         },
+        isPointerDown(tile) {
+          return tile.scene.input.activePointer.primaryDown;
+        },
       },
       actions: {
         /**
@@ -95,6 +125,14 @@ const createTileMachine = (context: Tile) =>
           if (tile.frame.name !== Tiles.DEFAULT.toString()) {
             tile.setFrame(Tiles.DEFAULT);
           }
+        },
+
+        display_zero(tile) {
+          tile.setFrame(Tiles.ZERO);
+        },
+
+        display_mark_down(tile) {
+          tile.setFrame(Tiles.QUESTION_MARK_PRESSED);
         },
 
         /** Display flag sprite and decrease hidden mine count in scene */
@@ -138,7 +176,7 @@ const createTileMachine = (context: Tile) =>
 
         /** Disable clicks on Tile when end state is reached */
         unregister_listeners(tile) {
-          tile.off(Phaser.Input.Events.POINTER_DOWN);
+          tile.removeInteractive();
         },
 
         lose_game(tile) {
