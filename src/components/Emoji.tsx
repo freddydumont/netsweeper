@@ -2,6 +2,9 @@
 import { jsx, css } from '@emotion/core';
 import { useEffect, useState } from 'react';
 import { GameEvents } from '../scripts/events';
+import spinthink from '../assets/spinthink.gif';
+import gasp from '../assets/gasp.png';
+import dead from '../assets/dead.png';
 
 export interface EmojiConfig {
   height: number;
@@ -17,15 +20,15 @@ interface EmojiProps {
 const emojis = {
   think: {
     alt: 'spinning thinking emoji',
-    src: './assets/spinthink.gif',
+    src: spinthink,
   },
   gasp: {
     alt: 'gasping emoji',
-    src: './assets/gasp.png',
+    src: gasp,
   },
   pain: {
     alt: 'dizzy face emoji',
-    src: './assets/dead.png',
+    src: dead,
   },
 };
 

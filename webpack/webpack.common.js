@@ -20,6 +20,10 @@ module.exports = {
         include: path.join(__dirname, '../src'),
         loader: 'ts-loader',
       },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: ['file-loader'],
+      },
     ],
   },
   optimization: {
@@ -40,7 +44,6 @@ module.exports = {
       template: 'src/index.html',
     }),
     new CopyWebpackPlugin([
-      { from: 'src/assets', to: 'assets' },
       { from: 'pwa', to: '' },
       { from: 'src/favicon', to: '' },
     ]),

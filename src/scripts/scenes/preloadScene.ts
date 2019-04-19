@@ -1,3 +1,6 @@
+import tiles from '../../assets/minesweeper.png';
+import digits from '../../assets/digits.png';
+
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
     super({ key: 'PreloadScene' });
@@ -17,11 +20,11 @@ export default class PreloadScene extends Phaser.Scene {
     });
     loadingText.setOrigin(0.5);
 
-    this.load.spritesheet('tiles', 'assets/minesweeper.png', {
+    this.load.spritesheet('tiles', tiles, {
       frameWidth: 32,
     });
 
-    this.load.spritesheet('digits', 'assets/digits.png', {
+    this.load.spritesheet('digits', digits, {
       frameHeight: 46,
       frameWidth: 26,
     });
