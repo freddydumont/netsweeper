@@ -14,6 +14,7 @@ export default class MainScene extends Phaser.Scene {
   clock: number;
   timer = 0;
   timerSprites: Counter;
+  remainingTiles: number;
   areMinesGenerated = false;
   difficulty: Difficulty;
   gridAlignConfig: GridAlignConfig;
@@ -30,6 +31,7 @@ export default class MainScene extends Phaser.Scene {
     this.generateGameBoard();
 
     this._hiddenMines = this.difficulty.mines;
+    this.remainingTiles = this.difficulty.tiles - this.difficulty.mines;
 
     this.mineCountSprites = new Counter({
       scene: this,

@@ -2,6 +2,7 @@ import { Machine } from 'xstate';
 import Tile from './Tile';
 import { Tiles, TilesByNumbers } from '../utils/Tiles';
 import { GameEvents } from '../events';
+import MainScene from '../scenes/mainScene';
 
 interface TileSchema {
   states: {
@@ -92,6 +93,11 @@ const createTileMachine = (context: Tile) =>
                 actions: ['reveal_mines', 'lose_game'],
               },
               {
+                cond: 'isLastTile',
+                target: 'end',
+                actions: ['reveal', 'win_game'],
+              },
+              {
                 target: 'end',
                 actions: ['reveal'],
               },
@@ -114,6 +120,9 @@ const createTileMachine = (context: Tile) =>
         },
         isPointerDown(tile) {
           return tile.scene.input.activePointer.primaryDown;
+        },
+        isLastTile(tile) {
+          return tile.scene.remainingTiles <= 1;
         },
       },
       actions: {
@@ -157,6 +166,10 @@ const createTileMachine = (context: Tile) =>
 
         /** Display appropriate tile */
         reveal(tile) {
+          // reduce remaining tiles by 1
+          tile.scene.remainingTiles = tile.scene.remainingTiles - 1;
+
+          // display thinking emoji and appropriate number
           tile.scene.game.events.emit(GameEvents.EMOJI_THINK);
           tile.setFrame(TilesByNumbers[tile.surroundingMines]);
 
@@ -171,7 +184,8 @@ const createTileMachine = (context: Tile) =>
         /** Reveal all mines. The one that was clicked is highlighted. */
         reveal_mines(tile) {
           tile.scene.tiles.forEach((t) => {
-            if (t.isMined) {
+            // @ts-ignore // ! name is not string but number
+            if (t.isMined && t.frame.name != Tiles.FLAG) {
               t.setFrame(Tiles.MINE);
             }
           });
@@ -185,18 +199,39 @@ const createTileMachine = (context: Tile) =>
         },
 
         lose_game(tile) {
-          // remove interactivity on all tiles
-          tile.scene.tiles.forEach((t) => {
-            t.removeInteractive();
-          });
-          // stop the timer
-          clearInterval(tile.scene.clock);
+          endGame(tile.scene);
           // display losing emoji
           tile.scene.game.events.emit(GameEvents.EMOJI_DEAD);
+        },
+
+        win_game(tile) {
+          endGame(tile.scene);
+
+          // set mine count to zero
+          tile.scene.mineCountSprites.updateSprites(0);
+
+          // flag all mines
+          tile.scene.tiles.forEach((t) => {
+            if (t.isMined) {
+              t.setFrame(Tiles.FLAG);
+            }
+          });
+
+          // display winning emoji
+          tile.scene.game.events.emit(GameEvents.EMOJI_WIN);
         },
       },
     },
     context
   );
+
+/** remove interactivity and stop the timer */
+function endGame(scene: MainScene) {
+  scene.tiles.forEach((t) => {
+    t.removeInteractive();
+  });
+
+  clearInterval(scene.clock);
+}
 
 export { TileSchema, TileEvent, createTileMachine };

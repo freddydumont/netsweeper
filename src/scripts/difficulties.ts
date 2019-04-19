@@ -6,6 +6,7 @@ interface Difficulty {
   width: number;
   height: number;
   mines: number;
+  tiles: number;
   tileSize: number;
   color: Colors;
 }
@@ -20,6 +21,7 @@ const difficulties: Difficulties = {
   easy: {
     width: 9,
     height: 9,
+    tiles: 81,
     mines: 10,
     tileSize: 32,
     color: 'teal',
@@ -27,6 +29,7 @@ const difficulties: Difficulties = {
   medium: {
     width: 16,
     height: 16,
+    tiles: 256,
     mines: 40,
     tileSize: 24,
     color: 'pink',
@@ -34,6 +37,7 @@ const difficulties: Difficulties = {
   hard: {
     width: 30,
     height: 16,
+    tiles: 480,
     mines: 99,
     tileSize: 24,
     color: 'purple',

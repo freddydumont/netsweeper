@@ -6,6 +6,7 @@ import { GameEvents } from '../scripts/events';
 import spinthink from '../assets/spinthink.gif';
 import gasp from '../assets/gasp.png';
 import dead from '../assets/dead.png';
+import win from '../assets/win.png';
 import { Theme } from '../styles/theme';
 import { shadow } from './Button';
 
@@ -25,6 +26,7 @@ interface EmojiProps {
 new Image().src = spinthink;
 new Image().src = gasp;
 new Image().src = dead;
+new Image().src = win;
 
 const emojis = {
   think: {
@@ -35,9 +37,13 @@ const emojis = {
     alt: 'gasping emoji',
     src: gasp,
   },
-  pain: {
+  dead: {
     alt: 'dizzy face emoji',
     src: dead,
+  },
+  win: {
+    alt: 'cool emoji',
+    src: win,
   },
 };
 
@@ -51,7 +57,8 @@ function Emoji({ game, theme, config: { height, scale, x } }: EmojiProps) {
   useEffect(() => {
     game.events.on(GameEvents.EMOJI_GASP, () => setEmoji(emojis.gasp));
     game.events.on(GameEvents.EMOJI_THINK, () => setEmoji(emojis.think));
-    game.events.on(GameEvents.EMOJI_DEAD, () => setEmoji(emojis.pain));
+    game.events.on(GameEvents.EMOJI_DEAD, () => setEmoji(emojis.dead));
+    game.events.on(GameEvents.EMOJI_WIN, () => setEmoji(emojis.win));
   }, [game]);
 
   return (
