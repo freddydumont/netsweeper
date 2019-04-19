@@ -2,7 +2,7 @@ import styled, { CreateStyled } from '@emotion/styled';
 
 export type Colors = 'teal' | 'pink' | 'purple' | 'blue' | 'dark' | 'red';
 
-interface Theme {
+export interface Theme {
   colors: {
     red: string;
     purple: string;

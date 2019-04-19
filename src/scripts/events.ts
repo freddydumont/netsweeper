@@ -12,6 +12,7 @@ enum GameEvents {
   EMOJI_THINK = 'EMOJI_THINK',
   EMOJI_GASP = 'EMOJI_GASP',
   EMOJI_DEAD = 'EMOJI_DEAD',
+  RESTART = 'RESTART',
 }
 
 export { Scenes, GameEvents };
