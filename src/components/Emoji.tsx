@@ -6,7 +6,7 @@ import { GameEvents } from '../scripts/events';
 import spinthink from '../assets/spinthink.gif';
 import gasp from '../assets/gasp.png';
 import dead from '../assets/dead.png';
-import { Colors, Theme } from '../styles/theme';
+import { Theme } from '../styles/theme';
 import { shadow } from './Button';
 
 export interface EmojiConfig {
@@ -18,7 +18,6 @@ export interface EmojiConfig {
 interface EmojiProps {
   game: Phaser.Game;
   theme: Theme;
-  color: Colors;
   config: EmojiConfig;
 }
 
@@ -42,12 +41,7 @@ const emojis = {
   },
 };
 
-function Emoji({
-  game,
-  color,
-  theme,
-  config: { height, scale, x },
-}: EmojiProps) {
+function Emoji({ game, theme, config: { height, scale, x } }: EmojiProps) {
   /** This is also the width since original is square */
   const scaledHeight = height * scale;
   const half = scaledHeight / 2;
@@ -73,8 +67,8 @@ function Emoji({
         transition: box-shadow 100ms ease-in;
 
         &:hover {
-          box-shadow: 0 0 16px 2px ${shadow({ color, theme })},
-            0 0 32px 0 ${shadow({ color, theme })} inset;
+          box-shadow: 0 0 16px 2px ${shadow({ color: 'red', theme })},
+            0 0 32px 0 ${shadow({ color: 'red', theme })} inset;
         }
       `}
       onClick={() => game.events.emit(GameEvents.RESTART)}

@@ -68,7 +68,7 @@ function App() {
         )}
         {scene === Scenes.GAME && timer && <CountShadow board={timer} />}
         {scene === Scenes.GAME && emojiConfig && board && (
-          <Emoji game={game} color={board.color} config={emojiConfig} />
+          <Emoji game={game} config={emojiConfig} />
         )}
       </div>
     </div>
