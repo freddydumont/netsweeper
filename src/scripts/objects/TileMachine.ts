@@ -181,12 +181,18 @@ const createTileMachine = (context: Tile) =>
           }
         },
 
-        /** Reveal all mines. The one that was clicked is highlighted. */
+        /** Reveal all mines. Highlight mistakes. */
         reveal_mines(tile) {
           tile.scene.tiles.forEach((t) => {
             // @ts-ignore // ! name is not string but number
-            if (t.isMined && t.frame.name != Tiles.FLAG) {
+            const isFlagged = t.frame.name === Tiles.FLAG;
+
+            if (t.isMined && !isFlagged) {
               t.setFrame(Tiles.MINE);
+            }
+
+            if (!t.isMined && isFlagged) {
+              t.setFrame(Tiles.FLAG_WRONG);
             }
           });
 
