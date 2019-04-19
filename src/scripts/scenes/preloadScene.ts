@@ -1,8 +1,5 @@
 import tiles from '../../assets/minesweeper.png';
 import digits from '../../assets/digits.png';
-import spinthink from '../../assets/spinthink.gif';
-import gasp from '../../assets/gasp.png';
-import dead from '../../assets/dead.png';
 
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -31,21 +28,6 @@ export default class PreloadScene extends Phaser.Scene {
       frameHeight: 46,
       frameWidth: 26,
     });
-
-    this.load.image([
-      {
-        key: 'think',
-        url: spinthink,
-      },
-      {
-        key: 'gasp',
-        url: gasp,
-      },
-      {
-        key: 'dead',
-        url: dead,
-      },
-    ]);
 
     this.load.on('complete', function() {
       loadingText.destroy();
