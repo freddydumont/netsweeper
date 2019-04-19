@@ -17,6 +17,11 @@ interface EmojiProps {
   config: EmojiConfig;
 }
 
+// Preload images
+new Image().src = spinthink;
+new Image().src = gasp;
+new Image().src = dead;
+
 const emojis = {
   think: {
     alt: 'spinning thinking emoji',
