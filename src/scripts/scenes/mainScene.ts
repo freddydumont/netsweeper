@@ -54,6 +54,14 @@ export default class MainScene extends Phaser.Scene {
     this.scale.on(Phaser.Scale.Events.RESIZE, () => {
       this.alignBoxShadow();
     });
+
+    /** Reset the state on RESTART event */
+    this.game.events.once(GameEvents.RESTART, () => {
+      clearInterval(this.clock);
+      this.timer = 0;
+      this.areMinesGenerated = false;
+      this.scene.restart();
+    });
   }
 
   update() {
