@@ -22,6 +22,12 @@ interface EmojiProps {
   config: EmojiConfig;
 }
 
+interface Emoji {
+  alt: string;
+  src: string;
+  text?: string;
+}
+
 // Preload images
 new Image().src = spinthink;
 new Image().src = gasp;
@@ -40,10 +46,12 @@ const emojis = {
   dead: {
     alt: 'dizzy face emoji',
     src: dead,
+    text: 'You lose!',
   },
   win: {
     alt: 'cool emoji',
     src: win,
+    text: 'You win!',
   },
 };
 
@@ -52,7 +60,7 @@ function Emoji({ game, theme, config: { height, scale, x } }: EmojiProps) {
   const scaledHeight = height * scale;
   const half = scaledHeight / 2;
 
-  const [emoji, setEmoji] = useState(emojis.think);
+  const [emoji, setEmoji] = useState<Emoji>(emojis.think);
 
   useEffect(() => {
     game.events.on(GameEvents.EMOJI_GASP, () => setEmoji(emojis.gasp));
@@ -61,26 +69,37 @@ function Emoji({ game, theme, config: { height, scale, x } }: EmojiProps) {
     game.events.on(GameEvents.EMOJI_WIN, () => setEmoji(emojis.win));
   }, [game]);
 
+  const { text, ...emojiProps } = emoji;
+
   return (
-    <img
+    <div
       css={css`
-        pointer-events: all;
-        cursor: pointer;
         position: absolute;
-        height: ${scaledHeight}px;
         top: ${75 * scale - half}px;
         left: ${x - half}px;
-        border-radius: 50%;
-        transition: box-shadow 100ms ease-in;
-
-        &:hover {
-          box-shadow: 0 0 16px 2px ${shadow({ color: 'red', theme })},
-            0 0 32px 0 ${shadow({ color: 'red', theme })} inset;
-        }
+        width: ${scaledHeight}px;
+        color: #fff;
+        text-align: center;
       `}
-      onClick={() => game.events.emit(GameEvents.RESTART)}
-      {...emoji}
-    />
+    >
+      <img
+        css={css`
+          pointer-events: all;
+          cursor: pointer;
+          height: ${scaledHeight}px;
+          border-radius: 50%;
+          transition: box-shadow 100ms ease-in;
+
+          &:hover {
+            box-shadow: 0 0 16px 2px ${shadow({ color: 'red', theme })},
+              0 0 32px 0 ${shadow({ color: 'red', theme })} inset;
+          }
+        `}
+        onClick={() => game.events.emit(GameEvents.RESTART)}
+        {...emojiProps}
+      />
+      {text && <p>{text}</p>}
+    </div>
   );
 }
 
