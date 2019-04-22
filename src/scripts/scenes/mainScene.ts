@@ -59,11 +59,26 @@ export default class MainScene extends Phaser.Scene {
 
     /** Reset the state on RESTART event */
     this.game.events.once(GameEvents.RESTART, () => {
-      clearInterval(this.clock);
-      this.timer = 0;
-      this.areMinesGenerated = false;
+      this.resetState();
       this.scene.restart();
     });
+
+    // reset and return to menu on ESC or Q
+    this.input.keyboard.on('keydown', (event) => {
+      if (
+        event.keyCode === Phaser.Input.Keyboard.KeyCodes.ESC ||
+        event.keyCode === Phaser.Input.Keyboard.KeyCodes.Q
+      ) {
+        this.resetState();
+        this.scene.start('MenuScene');
+      }
+    });
+  }
+
+  private resetState() {
+    clearInterval(this.clock);
+    this.timer = 0;
+    this.areMinesGenerated = false;
   }
 
   update() {

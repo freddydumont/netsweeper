@@ -79,6 +79,7 @@ function Emoji({ game, theme, config: { height, scale, x } }: EmojiProps) {
         left: ${x - half}px;
         width: ${scaledHeight}px;
         color: #fff;
+        font-size: ${0.5 * scale}rem;
         text-align: center;
       `}
     >

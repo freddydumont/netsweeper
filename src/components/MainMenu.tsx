@@ -62,6 +62,7 @@ const styles = {
   `,
 
   menu: (opacity: number) => css`
+    pointer-events: all;
     color: #fff;
     width: 100%;
     height: 100%;
