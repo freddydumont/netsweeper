@@ -62,14 +62,7 @@ export default class Tile extends Phaser.GameObjects.Image {
   }
 
   private initMachine() {
-    this.stateMachine = interpret(createTileMachine(this))
-      .onTransition((nextState) =>
-        console.log(
-          'TCL: Tile -> privateinitMachine -> nextState',
-          nextState.value
-        )
-      )
-      .start();
+    this.stateMachine = interpret(createTileMachine(this)).start();
   }
 
   private handleClick({ buttons }: Phaser.Input.Pointer) {

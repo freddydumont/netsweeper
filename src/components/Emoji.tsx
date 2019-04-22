@@ -67,6 +67,13 @@ function Emoji({ game, theme, config: { height, scale, x } }: EmojiProps) {
     game.events.on(GameEvents.EMOJI_THINK, () => setEmoji(emojis.think));
     game.events.on(GameEvents.EMOJI_DEAD, () => setEmoji(emojis.dead));
     game.events.on(GameEvents.EMOJI_WIN, () => setEmoji(emojis.win));
+
+    return () => {
+      game.events.off(GameEvents.EMOJI_GASP);
+      game.events.off(GameEvents.EMOJI_THINK);
+      game.events.off(GameEvents.EMOJI_DEAD);
+      game.events.off(GameEvents.EMOJI_WIN);
+    };
   }, [game]);
 
   const { text, ...emojiProps } = emoji;
