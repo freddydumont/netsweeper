@@ -21,6 +21,7 @@ const Button = styled.button<ButtonProps>`
   box-shadow: 0 2px 4px ${(props) => shadow(props)}, ${(props) => border(props)};
   width: 9rem;
   height: 2.25rem;
+  margin: 1rem;
   transition: background-color 250ms ease-in;
   transition: color 250ms ease-in;
 

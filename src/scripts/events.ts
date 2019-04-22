@@ -14,6 +14,7 @@ enum GameEvents {
   EMOJI_DEAD = 'EMOJI_DEAD',
   EMOJI_WIN = 'EMOJI_WIN',
   RESTART = 'RESTART',
+  RESIZE = 'RESIZE',
 }
 
 export { Scenes, GameEvents };

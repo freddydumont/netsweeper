@@ -4,7 +4,7 @@ import { ThemeProvider } from 'emotion-theming';
 import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { createGame } from './scripts/game';
-import MainMenu from './components/MainMenu';
+import MainMenu, { Scale } from './components/MainMenu';
 import { BoardShadow, CountShadow } from './components/BoxShadow';
 import { Scenes, GameEvents } from './scripts/events';
 import { theme } from './styles/theme';
@@ -19,6 +19,7 @@ function App() {
   const [mineCount, setMineCount] = useState<BoxShadowConfig | undefined>();
   const [timer, setTimer] = useState<BoxShadowConfig | undefined>();
   const [emojiConfig, setEmojiConfig] = useState<EmojiConfig | undefined>();
+  const [scale, setScale] = useState<Scale | undefined>();
 
   /** Create the game on mount and init scene change listeners */
   useEffect(() => {
@@ -27,7 +28,10 @@ function App() {
         setGame(game);
         // these listeners change the scene in state, to be used in render
         // to display different UIs according to state
-        game.events.on(Scenes.MAINMENU, () => setScene(Scenes.MAINMENU));
+        game.events.on(Scenes.MAINMENU, (scale: Scale) => {
+          setScene(Scenes.MAINMENU);
+          setScale(scale);
+        });
         game.events.on(Scenes.GAME, () => {
           // remove pointer events for canvas pass-through
           document.getElementById('menu')!.style.pointerEvents = 'none';
@@ -49,6 +53,10 @@ function App() {
         game.events.on(GameEvents.EMOJI_UPDATED, (box: EmojiConfig) => {
           setEmojiConfig(box);
         });
+
+        game.events.on(GameEvents.RESIZE, (scale: Scale) => {
+          setScale(scale);
+        });
       });
     }
   }, [game]);
@@ -59,7 +67,9 @@ function App() {
     // ids are important for positioning, see game.ts
     <div id="phaser-game" css={styles.game}>
       <div id="menu" css={styles.menu}>
-        {scene === Scenes.MAINMENU && <MainMenu game={game} />}
+        {scene === Scenes.MAINMENU && scale && (
+          <MainMenu game={game} scale={scale} />
+        )}
         {scene === Scenes.GAME && board && (
           <BoardShadow board={board} pointer />
         )}
